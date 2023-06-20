@@ -11,6 +11,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
       render json: { message: 'Signed up.' }
     end  
     def register_failed
-      render json: { message: resource.errors.full_messages.first }
+      render json: { message: resource.errors.full_messages.first }, status: :unauthorized
     end
 end
