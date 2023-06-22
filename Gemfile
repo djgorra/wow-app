@@ -61,3 +61,4 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 gem "devise" #for login authentication
 gem "devise-jwt" #for JSON login authentication
 gem "net-http"
+gem "activeadmin",            "=2.9"

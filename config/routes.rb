@@ -1,12 +1,14 @@
 Rails.application.routes.draw do
 
+  devise_for :admin_users, ActiveAdmin::Devise.config
+  ActiveAdmin.routes(self)
   root to: "pages#home"
 
-  scope :api, defaults: { format: :json } do
+  scope :api, defaults: { } do
     devise_for :users,
              controllers: {
-                 sessions: 'users/sessions',
-                 registrations: 'users/registrations'
+                 sessions: 'login/sessions',
+                 registrations: 'login/registrations'
              }
     # devise_for :users, controllers: { sessions: :sessions },
     #                    path_names: { sign_in: :login }

@@ -1,5 +1,5 @@
-class Users::SessionsController < Devise::SessionsController
-    respond_to :json  
+class Login::SessionsController < Devise::SessionsController
+  #respond_to :html, :json 
     
     private  
     
