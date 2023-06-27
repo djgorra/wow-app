@@ -17,6 +17,15 @@ describe Login::SessionsController, :type=>:request do
     post "/api/users/sign_in", {:params=>{:user=>{:email=>"test@test.com", :password=>"5555"}}}
     assert_response :unprocessable_entity
   end 
+
+  it "logs out" do
+    @user = FactoryBot.create(:user, {:email=>"test@test.com", :password=>"123456", :password_confirmation=>"123456", :username=>"Bob"})
+    post "/api/users/sign_in", {:params=>{:user=>{:email=>"test@test.com", :password=>"123456"}}}
+    data = JSON.parse(response.body)
+    token = data["access_token"]
+    delete "/api/users/sign_out", headers: { "HTTP_AUTHORIZATION" => "Bearer #{token}" }
+    puts response.body
+  end
   
 protected
 
