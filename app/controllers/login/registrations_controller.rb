@@ -8,7 +8,15 @@ class Login::RegistrationsController < Devise::RegistrationsController
     end  
 
     def register_success
-      render json: { message: 'Signed up.' }
+      render json: { 
+        access_token: request.headers["warden-jwt_auth.token"],
+        token_type: "Bearer",
+        expires_in: 3600,
+        user: {
+          "name": resource.username,
+          "email": resource.email
+        } 
+      }, status: :ok
     end  
     def register_failed
       render json: { message: resource.errors.full_messages.first }, status: :unauthorized
