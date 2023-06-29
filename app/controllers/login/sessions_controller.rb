@@ -5,7 +5,7 @@ class Login::SessionsController < Devise::SessionsController
     
     def respond_with(resource, _opts = {})
       render json: { 
-        access_token: request.headers["warden-jwt_auth.token"],
+        access_token: resource.generate_jwt,
         token_type: "Bearer",
         expires_in: 3600,
         user: {
