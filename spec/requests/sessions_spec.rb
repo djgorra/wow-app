@@ -31,8 +31,10 @@ describe Login::SessionsController, :type=>:request do
     post "/api/users/sign_in", {:params=>{:user=>{:email=>"test@test.com", :password=>"123456"}}}
     data = JSON.parse(response.body)
     token = data["access_token"]
-    delete "/api/users/sign_out", headers: { "HTTP_AUTHORIZATION" => "Bearer #{token}" }
-    puts response.body
+    expect{
+    delete "/api/users/sign_out.json", headers: { "Authorization" => "Bearer #{token}" }
+    }.to change(JwtDenylist, :count).by(1)
+    assert_response :success
   end
   
 protected

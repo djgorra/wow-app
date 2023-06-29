@@ -6,7 +6,7 @@ class User < ApplicationRecord
          :jwt_authenticatable, jwt_revocation_strategy: JwtDenylist
   validates :username, uniqueness: { case_sensitive: false }, presence: true, allow_blank: false, format: { with: /\A[a-zA-Z0-9]+\z/ }
   
-  def expiration_time
+  def self.expiration_time
     60.days.from_now.to_i
   end
 
@@ -14,9 +14,10 @@ class User < ApplicationRecord
     JWT.encode(
       { 
         id: id,
-        exp:expiration_time
+        exp:User.expiration_time.to_i,
+        jti: SecureRandom.uuid
       },
-      Rails.application.secrets.secret_key_base
+      Rails.application.secret_key_base
     )
   end
 
