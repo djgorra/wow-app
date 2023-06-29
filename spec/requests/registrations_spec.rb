@@ -10,10 +10,10 @@ describe Login::RegistrationsController, :type=>:request do
     data = JSON.parse(response.body)
   end
   
-  it "allows login" do
+  it "shows an error message" do
     post "/api/users", {:params=>{:user=>{:email=>"test@test2.com", :password=>"123", :username=>"Bob"}}}
-    assert_response :success
-    data = JSON.parse(response.body)
+    assert_response :unauthorized
+    assert response.body.include?("Password is too short")
   end
   
 protected

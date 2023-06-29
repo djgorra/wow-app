@@ -4,15 +4,7 @@ class Login::SessionsController < Devise::SessionsController
     private  
     
     def respond_with(resource, _opts = {})
-      render json: { 
-        access_token: resource.generate_jwt,
-        token_type: "Bearer",
-        expires_in: 3600,
-        user: {
-          "name": resource.username,
-          "email": resource.email
-        } 
-      }, status: :ok
+      render :json=>resource, status: :ok
     end  
     
     def respond_to_on_destroy
