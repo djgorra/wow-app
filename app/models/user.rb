@@ -8,7 +8,7 @@ class User < ApplicationRecord
 
   has_one_attached :avatar
   
-  def expiration_time
+  def self.expiration_time
     60.days.from_now.to_i
   end
 
@@ -16,9 +16,10 @@ class User < ApplicationRecord
     JWT.encode(
       { 
         id: id,
-        exp:expiration_time
+        exp:User.expiration_time.to_i,
+        jti: SecureRandom.uuid
       },
-      Rails.application.secrets.secret_key_base
+      Rails.application.secret_key_base
     )
   end
 
