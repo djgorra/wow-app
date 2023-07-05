@@ -5,6 +5,8 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable, 
          :jwt_authenticatable, jwt_revocation_strategy: JwtDenylist
   validates :username, uniqueness: { case_sensitive: false }, presence: true, allow_blank: false, format: { with: /\A[a-zA-Z0-9]+\z/ }
+
+  has_one_attached :avatar
   
   def self.expiration_time
     60.days
@@ -27,7 +29,7 @@ class User < ApplicationRecord
 
   def as_json(options = {})
     out = {:access_token=>generate_jwt, :expires_at=>User.expiration_time.from_now.to_i, :user=>{}}
-     [:email, :username].each do |key|
+     [:id, :email, :username].each do |key|
       out[:user][key] = self.send(key)
     end
     out
