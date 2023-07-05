@@ -7,22 +7,26 @@ class User < ApplicationRecord
   validates :username, uniqueness: { case_sensitive: false }, presence: true, allow_blank: false, format: { with: /\A[a-zA-Z0-9]+\z/ }
   
   def self.expiration_time
-    60.days.from_now.to_i
+    60.days
+  end
+
+  def self.secret
+    Rails.application.secret_key_base
   end
 
   def generate_jwt
     JWT.encode(
       { 
         id: id,
-        exp:User.expiration_time.to_i,
+        exp:User.expiration_time.from_now.to_i,
         jti: SecureRandom.uuid
       },
-      Rails.application.secret_key_base
+      User.secret
     )
   end
 
   def as_json(options = {})
-    out = {:access_token=>generate_jwt, :user=>{}}
+    out = {:access_token=>generate_jwt, :expires_at=>User.expiration_time.from_now.to_i, :user=>{}}
      [:email, :username].each do |key|
       out[:user][key] = self.send(key)
     end

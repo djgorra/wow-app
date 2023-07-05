@@ -14,7 +14,7 @@ class Login::SessionsController < Devise::SessionsController
 
     def revoke_token(token)
       # Decode JWT to get jti and exp values.
-      secret = Rails.application.secret_key_base
+      secret = User.secret
       jti = JWT.decode(token, secret, true, algorithm: 'HS256', verify_jti: true)[0]['jti']
       exp = JWT.decode(token, secret, true, algorithm: 'HS256')[0]['exp']
       user_id = JWT.decode(token, secret, true, algorithm: 'HS256')[0]['id']
