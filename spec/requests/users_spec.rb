@@ -13,4 +13,17 @@ describe UsersController, :type=>:request do
         assert_response :success
         assert_equal @user.reload.username, "Ted"
     end
+
+    it "uploads a user avatar" do
+        @user = FactoryBot.create(:user)
+        post "/api/users/sign_in", {:params=>{:user=>{:email=>@user.email, :password=>@user.password}}}   
+        assert_response :success
+        data = JSON.parse(response.body)
+        token = data["access_token"]     
+        test_image = './spec/fixtures/images/avatar.png'
+        file = Rack::Test::UploadedFile.new(test_image, "image/png")
+        patch "/users", {:params=>{:user=>{:avatar=>file}}, headers: { "HTTP_AUTHORIZATION" =>"Bearer #{token}" }}
+        assert_response :success
+        assert @user.reload.avatar.present?
+      end
 end
