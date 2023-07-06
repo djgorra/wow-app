@@ -27,9 +27,17 @@ class User < ApplicationRecord
     )
   end
 
+  def avatar_url
+    if avatar.attached?
+      Rails.application.routes.url_helpers.rails_blob_url(avatar, only_path: true)
+    else
+      nil
+    end
+  end
+
   def as_json(options = {})
     out = {:access_token=>generate_jwt, :expires_at=>User.expiration_time.from_now.to_i, :user=>{}}
-     [:id, :email, :username].each do |key|
+     [:id, :email, :username, :avatar_url].each do |key|
       out[:user][key] = self.send(key)
     end
     out
