@@ -16,6 +16,6 @@ class OauthController < ApplicationController
                             authorize_url: '/authorize',
                             token_url: '/token')
         @access = client.auth_code.get_token(code, redirect_uri: 'https://wow-app-rails-5c78013cc11c.herokuapp.com/oauth2/callback')
-        @response = @access.get('/profile/user/wow', params: {'region' => 'us', 'namespace' => 'profile-us', 'locale' => 'en_US'})
+        # @response = @access.get('/profile/user/wow', params: {'region' => 'us', 'namespace' => 'profile-us', 'locale' => 'en_US'})
     end
 end
