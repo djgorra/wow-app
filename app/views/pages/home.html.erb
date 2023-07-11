@@ -30,37 +30,9 @@
             </div>
       <% end %>
       
-      <h2 class="text-primary">Admin Log in</h2>
-
-      <form class="formtastic admin_user" id="session_new" novalidate="novalidate" action="/admin/login" accept-charset="UTF-8" method="post">
-        <input type="hidden" name="authenticity_token" value="B0XyYNQQHnjERrO+yScHca3PAJzz+H8RtSDiw8wG5rvbIqrWbmT4PP8oA8Mh6yjFKvjfZqyE+FqH3Q/0koILJA==" />
-        <fieldset class="inputs">
-          <ol>
-          <li class="email input required autofocus stringish" id="admin_user_email_input">
-            <%# <label for="admin_user_email" class="label">Email<abbr title="required">*</abbr></label> %>
-            <input id="admin_user_email" autofocus="autofocus" type="email" value="" name="admin_user[email]" placeholder="Email"/>
-          </li>
-          <li class="password input required stringish" id="admin_user_password_input">
-            <%# <label for="admin_user_password" class="label">Password<abbr title="required">*</abbr></label> %>
-            <input maxlength="128" id="admin_user_password" type="password" name="admin_user[password]" placeholder="Password"/>
-
-          </li>
-          <li class="boolean input optional" id="admin_user_remember_me_input">
-            <input type="hidden" name="admin_user[remember_me]" value="0" />
-            <label for="admin_user_remember_me" class="">
-            <input type="checkbox" name="admin_user[remember_me]" id="admin_user_remember_me" value="1" />Remember me</label>
-
-          </li>
-          </ol>
-        </fieldset>
-        <fieldset class="actions">
-          <ol>
-          <li class="action input_action " id="admin_user_submit_action">
-            <input type="submit" name="commit" value="Login" data-disable-with="Login" />
-          </li>
-          </ol>
-        </fieldset>
-      </form>
+      <%= link_to "User Login", oauth2_login_path %>
+      <br>
+      <%= link_to "Admin Login", new_admin_user_session_path %>
         
     </div>
   </body>

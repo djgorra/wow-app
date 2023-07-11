@@ -64,3 +64,5 @@ gem "net-http"
 gem "activeadmin",            "=2.9"
 
 gem "aws-sdk-s3", require: false
+
+gem "oauth2", "~> 2.0"
