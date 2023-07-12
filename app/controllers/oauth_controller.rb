@@ -6,7 +6,7 @@ class OauthController < ApplicationController
                             site: 'https://oauth.battle.net/',
                             authorize_url: '/authorize',
                             token_url: '/token')
-        redirect_to client.auth_code.authorize_url(redirect_uri: 'https://wow-app-rails-5c78013cc11c.herokuapp.com/oauth2/callback', scope: 'wow.profile', state: '123')
+        redirect_to client.auth_code.authorize_url(redirect_uri: ENV["OAUTH_REDIRECT"], scope: 'wow.profile', state: '123')
     end
 
     def callback
@@ -15,7 +15,7 @@ class OauthController < ApplicationController
                             site: 'https://oauth.battle.net',
                             authorize_url: '/authorize',
                             token_url: '/token')
-        @access = client.auth_code.get_token(code, redirect_uri: 'https://wow-app-rails-5c78013cc11c.herokuapp.com/oauth2/callback', scope: 'wow.profile', grant_type: 'authorization_code')
-        # @response = @access.get('/profile/user/wow', params: {'region' => 'us', 'namespace' => 'profile-us', 'locale' => 'en_US'})
+        @access = client.auth_code.get_token(code, redirect_uri: ENV["OAUTH_REDIRECT"], scope: 'wow.profile', grant_type: 'authorization_code')
+        @response = @access.get('/userinfo', params: {'region' => 'us', 'namespace' => 'profile-us', 'locale' => 'en_US'})
     end
 end
