@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_06_30_170218) do
+ActiveRecord::Schema.define(version: 2023_07_13_172817) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -62,6 +62,16 @@ ActiveRecord::Schema.define(version: 2023_06_30_170218) do
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
   end
 
+  create_table "item_sets", force: :cascade do |t|
+    t.string "name"
+  end
+
+  create_table "items", force: :cascade do |t|
+    t.string "name"
+    t.string "image_url"
+    t.integer "wow_id"
+  end
+
   create_table "jwt_denylist", force: :cascade do |t|
     t.string "jti", null: false
     t.datetime "exp", null: false
@@ -77,6 +87,11 @@ ActiveRecord::Schema.define(version: 2023_06_30_170218) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "username"
+    t.integer "wow_id"
+    t.string "battletag"
+    t.string "access_token"
+    t.datetime "access_token_expires_at"
+    t.string "access_token_hash"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
