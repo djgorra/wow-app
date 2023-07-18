@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_07_13_172817) do
+ActiveRecord::Schema.define(version: 2023_07_18_175141) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -62,20 +62,34 @@ ActiveRecord::Schema.define(version: 2023_07_13_172817) do
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
   end
 
-  create_table "item_sets", force: :cascade do |t|
+  create_table "bosses", force: :cascade do |t|
+    t.bigint "raid_id"
     t.string "name"
+    t.index ["raid_id"], name: "index_bosses_on_raid_id"
   end
 
   create_table "items", force: :cascade do |t|
     t.string "name"
     t.string "image_url"
     t.integer "wow_id"
+    t.string "category"
+    t.string "subcategory"
+    t.integer "item_level"
+    t.bigint "boss_id"
+    t.bigint "raid_id"
+    t.index ["boss_id"], name: "index_items_on_boss_id"
+    t.index ["raid_id"], name: "index_items_on_raid_id"
   end
 
   create_table "jwt_denylist", force: :cascade do |t|
     t.string "jti", null: false
     t.datetime "exp", null: false
     t.index ["jti"], name: "index_jwt_denylist_on_jti"
+  end
+
+  create_table "raids", force: :cascade do |t|
+    t.string "name"
+    t.string "wow_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -97,4 +111,6 @@ ActiveRecord::Schema.define(version: 2023_07_13_172817) do
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "items", "bosses"
+  add_foreign_key "items", "raids"
 end
