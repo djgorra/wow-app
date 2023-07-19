@@ -19,10 +19,11 @@ class OauthController < ApplicationController
                             token_url: '/token')
         @access = client.auth_code.get_token(code, redirect_uri: ENV["OAUTH_REDIRECT"], scope: 'wow.profile', grant_type: 'authorization_code')
         @response = @access.get('/userinfo', params: {'region' => 'us', 'namespace' => 'profile-us', 'locale' => 'en_US'})
-        user.wow_id=@response.body["id"]
-        user.battletag = @response.body["battletag"]
+        data = JSON.parse(@response.body)
+        user.wow_id=data["id"]
+        user.battletag = data["battletag"]
         user.access_token = @access.to_hash["access_token"]
-        user.access_token_expires_at = @access.to_hash["expires_at"]
+        user.access_token_expires_at = Time.at(@access.to_hash["expires_at"])
         user.access_token_hash = @access.to_hash
         user.save
     end
