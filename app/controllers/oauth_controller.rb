@@ -19,8 +19,8 @@ class OauthController < ApplicationController
                             token_url: '/token')
         @access = client.auth_code.get_token(code, redirect_uri: ENV["OAUTH_REDIRECT"], scope: 'wow.profile', grant_type: 'authorization_code')
         @response = @access.get('/userinfo', params: {'region' => 'us', 'namespace' => 'profile-us', 'locale' => 'en_US'})
-        user.wow_id=@response.to_hash["id"]
-        user.battletag = @response.to_hash["battletag"]
+        user.wow_id=@response.body["id"]
+        user.battletag = @response.body["battletag"]
         user.access_token = @access.access_token
         user.access_token_expires_at = @access.expires_at
         user.access_token_hash = @access.to_hash
