@@ -21,8 +21,8 @@ class OauthController < ApplicationController
         @response = @access.get('/userinfo', params: {'region' => 'us', 'namespace' => 'profile-us', 'locale' => 'en_US'})
         user.wow_id=@response.body["id"]
         user.battletag = @response.body["battletag"]
-        user.access_token = @access.access_token
-        user.access_token_expires_at = @access.expires_at
+        user.access_token = @access.to_hash["access_token"]
+        user.access_token_expires_at = @access.to_hash["expires_at"]
         user.access_token_hash = @access.to_hash
         user.save
     end
