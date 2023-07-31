@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_07_18_175141) do
+ActiveRecord::Schema.define(version: 2023_07_24_180659) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -68,6 +68,30 @@ ActiveRecord::Schema.define(version: 2023_07_18_175141) do
     t.index ["raid_id"], name: "index_bosses_on_raid_id"
   end
 
+  create_table "character_classes", force: :cascade do |t|
+    t.string "name", null: false
+  end
+
+  create_table "characters", force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "user_id", null: false
+    t.bigint "character_class_id"
+    t.bigint "primary_spec_id"
+    t.bigint "secondary_spec_id"
+    t.index ["character_class_id"], name: "index_characters_on_character_class_id"
+    t.index ["primary_spec_id"], name: "index_characters_on_primary_spec_id"
+    t.index ["secondary_spec_id"], name: "index_characters_on_secondary_spec_id"
+    t.index ["user_id"], name: "index_characters_on_user_id"
+  end
+
+  create_table "characters_items", id: false, force: :cascade do |t|
+    t.bigint "id"
+    t.bigint "character_id"
+    t.bigint "item_id"
+  end
+
   create_table "items", force: :cascade do |t|
     t.string "name"
     t.string "image_url"
@@ -92,6 +116,15 @@ ActiveRecord::Schema.define(version: 2023_07_18_175141) do
     t.string "wow_id"
   end
 
+  create_table "specializations", force: :cascade do |t|
+    t.string "name", null: false
+    t.integer "role", null: false
+    t.string "buffs", default: [], array: true
+    t.string "debuffs", default: [], array: true
+    t.bigint "character_class_id"
+    t.index ["character_class_id"], name: "index_specializations_on_character_class_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -111,6 +144,11 @@ ActiveRecord::Schema.define(version: 2023_07_18_175141) do
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "characters", "character_classes"
+  add_foreign_key "characters", "specializations", column: "primary_spec_id"
+  add_foreign_key "characters", "specializations", column: "secondary_spec_id"
+  add_foreign_key "characters", "users"
   add_foreign_key "items", "bosses"
   add_foreign_key "items", "raids"
+  add_foreign_key "specializations", "character_classes"
 end
