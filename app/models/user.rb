@@ -40,6 +40,7 @@ class User < ApplicationRecord
      [:id, :email, :username, :avatar_url].each do |key|
       out[:user][key] = self.send(key)
     end
+    out[:characters]=characters.as_json
     out
   end
 
