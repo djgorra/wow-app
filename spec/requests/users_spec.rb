@@ -2,6 +2,7 @@ require 'spec_helper'
 require 'rake'
 
 describe UsersController, :type=>:request do
+
     it "updates username" do
         @user = FactoryBot.create(:user, {:email=>"test@test.com", :password=>"123456", :password_confirmation=>"123456", :username=>"Bob"})
         post "/api/users/sign_in", {:params=>{:user=>{:email=>"test@test.com", :password=>"123456"}}}
@@ -26,4 +27,4 @@ describe UsersController, :type=>:request do
         assert_response :success
         assert @user.reload.avatar.present?
       end
-end
+end 

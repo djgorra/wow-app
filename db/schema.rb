@@ -88,10 +88,11 @@ ActiveRecord::Schema.define(version: 2023_08_02_154659) do
     t.index ["user_id"], name: "index_characters_on_user_id"
   end
 
-  create_table "characters_items", id: false, force: :cascade do |t|
-    t.bigint "id"
-    t.bigint "character_id"
+  create_table "characters_items", force: :cascade do |t|
+    t.bigint "character_id", null: false
     t.bigint "item_id"
+    t.index ["character_id"], name: "index_characters_items_on_character_id"
+    t.index ["item_id"], name: "index_characters_items_on_item_id"
   end
 
   create_table "items", force: :cascade do |t|
@@ -150,6 +151,8 @@ ActiveRecord::Schema.define(version: 2023_08_02_154659) do
   add_foreign_key "characters", "specializations", column: "primary_spec_id"
   add_foreign_key "characters", "specializations", column: "secondary_spec_id"
   add_foreign_key "characters", "users"
+  add_foreign_key "characters_items", "characters"
+  add_foreign_key "characters_items", "items"
   add_foreign_key "items", "bosses"
   add_foreign_key "items", "raids"
   add_foreign_key "specializations", "character_classes"
