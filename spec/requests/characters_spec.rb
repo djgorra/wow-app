@@ -72,7 +72,8 @@ RSpec.describe "/characters", type: :request do
     context "with valid parameters" do
       it "creates a new Character" do
         expect {
-          post "/api/characters/", params: { character: valid_attributes }
+          post "/api/characters.json", params: { character: valid_attributes }
+          puts response.body
         }.to change(Character, :count).by(1)
       end
 
@@ -106,7 +107,6 @@ RSpec.describe "/characters", type: :request do
         character = Character.create! valid_attributes
         put "/api/characters/#{character.id}.json", params: { character: new_attributes }
         character.reload
-        puts response.body
         assert_equal "NewName", character.reload.name
       end
 

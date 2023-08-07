@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_08_02_154659) do
+ActiveRecord::Schema.define(version: 2023_08_03_192806) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -72,6 +72,12 @@ ActiveRecord::Schema.define(version: 2023_08_02_154659) do
     t.string "name", null: false
   end
 
+  create_table "character_items", id: false, force: :cascade do |t|
+    t.bigint "id"
+    t.bigint "character_id"
+    t.bigint "item_id"
+  end
+
   create_table "characters", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -86,13 +92,6 @@ ActiveRecord::Schema.define(version: 2023_08_02_154659) do
     t.index ["primary_spec_id"], name: "index_characters_on_primary_spec_id"
     t.index ["secondary_spec_id"], name: "index_characters_on_secondary_spec_id"
     t.index ["user_id"], name: "index_characters_on_user_id"
-  end
-
-  create_table "characters_items", force: :cascade do |t|
-    t.bigint "character_id", null: false
-    t.bigint "item_id"
-    t.index ["character_id"], name: "index_characters_items_on_character_id"
-    t.index ["item_id"], name: "index_characters_items_on_item_id"
   end
 
   create_table "items", force: :cascade do |t|
@@ -151,8 +150,6 @@ ActiveRecord::Schema.define(version: 2023_08_02_154659) do
   add_foreign_key "characters", "specializations", column: "primary_spec_id"
   add_foreign_key "characters", "specializations", column: "secondary_spec_id"
   add_foreign_key "characters", "users"
-  add_foreign_key "characters_items", "characters"
-  add_foreign_key "characters_items", "items"
   add_foreign_key "items", "bosses"
   add_foreign_key "items", "raids"
   add_foreign_key "specializations", "character_classes"

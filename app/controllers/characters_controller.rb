@@ -20,7 +20,7 @@ class CharactersController < ApplicationController
       respond_to do |format|
         if @character.save
           format.html { redirect_to "/api/characters/#{@character.id}", notice: "Character was successfully created." }
-          format.json { render :show, status: :created, location: @character }
+          format.json { render :json=>current_user.as_json, status: :created }
         else
           format.html { render :new, status: :unprocessable_entity }
           format.json { render json: @character.errors, status: :unprocessable_entity }
