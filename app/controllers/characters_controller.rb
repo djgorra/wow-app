@@ -23,7 +23,7 @@ class CharactersController < ApplicationController
           format.json { render :json=>current_user.as_json, status: :created }
         else
           format.html { render :new, status: :unprocessable_entity }
-          format.json { render json: @character.errors, status: :unprocessable_entity }
+          format.json { render :json=>{:message=>@character.errors.full_messages.first}, status: :unprocessable_entity }
         end
       end
     else

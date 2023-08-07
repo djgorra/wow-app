@@ -36,7 +36,7 @@ RSpec.describe "/characters", type: :request do
   }
 
   let(:invalid_attributes) {
-    skip("Add a hash of attributes invalid for your model")
+    {:name=>"", :user_id=>@user.id, :character_class_id=>@character_class.id , :primary_spec_id=>@spec.id, :secondary_spec_id=>@spec2.id}
   }
 
   # describe "GET /index" do
@@ -73,7 +73,6 @@ RSpec.describe "/characters", type: :request do
       it "creates a new Character" do
         expect {
           post "/api/characters.json", params: { character: valid_attributes }
-          puts response.body
         }.to change(Character, :count).by(1)
       end
 
@@ -83,18 +82,19 @@ RSpec.describe "/characters", type: :request do
       # end
     end
 
-  #   context "with invalid parameters" do
-  #     it "does not create a new Character" do
-  #       expect {
-  #         post characters_url, params: { character: invalid_attributes }
-  #       }.to change(Character, :count).by(0)
-  #     end
+    context "with invalid parameters" do
+      it "does not create a new Character" do
+        expect {
+          post "/api/characters.json", params: { character: invalid_attributes }
+          puts response.body
+        }.to change(Character, :count).by(0)
+      end
 
   #     it "renders a successful response (i.e. to display the 'new' template)" do
   #       post characters_url, params: { character: invalid_attributes }
   #       expect(response).to be_successful
   #     end
-  #   end
+    end
    end
 
   describe "PATCH /update" do
