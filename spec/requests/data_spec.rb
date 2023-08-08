@@ -17,7 +17,6 @@ describe DataController, :type=>:request do
     end
     it "gets class and raid data" do
       post "/api/datafile", { :params=>{}, headers: { "HTTP_AUTHORIZATION" =>"Bearer #{@token}" }}
-      puts response.body
       assert_response :success
     end
 
