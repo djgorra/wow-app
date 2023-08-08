@@ -7,11 +7,15 @@ class Item < ApplicationRecord
     has_and_belongs_to_many :characters
 
     def self.download_images
-        Item.all.each do |item|
-            open("https://wow.zamimg.com/images/wow/icons/large/#{item.image_url}.jpg") do |image|
+        Item.find_each do |item|
+            begin
+              open("https://wow.zamimg.com/images/wow/icons/large/#{item.image_url}.jpg") do |image|
                 File.open("public/items/#{item.image_url}.jpg","wb") do |file|
                     file.write(image.read)
                 end
+              end
+            rescue Net::OpenTimeout
+              next
             end
         end
     end

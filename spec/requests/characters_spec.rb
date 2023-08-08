@@ -86,7 +86,6 @@ RSpec.describe "/characters", type: :request do
       it "does not create a new Character" do
         expect {
           post "/api/characters.json", params: { character: invalid_attributes }
-          puts response.body
         }.to change(Character, :count).by(0)
       end
 

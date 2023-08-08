@@ -72,10 +72,11 @@ ActiveRecord::Schema.define(version: 2023_08_03_192806) do
     t.string "name", null: false
   end
 
-  create_table "character_items", id: false, force: :cascade do |t|
-    t.bigint "id"
-    t.bigint "character_id"
+  create_table "character_items", force: :cascade do |t|
+    t.bigint "character_id", null: false
     t.bigint "item_id"
+    t.index ["character_id"], name: "index_character_items_on_character_id"
+    t.index ["item_id"], name: "index_character_items_on_item_id"
   end
 
   create_table "characters", force: :cascade do |t|
@@ -146,6 +147,8 @@ ActiveRecord::Schema.define(version: 2023_08_03_192806) do
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "character_items", "characters"
+  add_foreign_key "character_items", "items"
   add_foreign_key "characters", "character_classes"
   add_foreign_key "characters", "specializations", column: "primary_spec_id"
   add_foreign_key "characters", "specializations", column: "secondary_spec_id"
