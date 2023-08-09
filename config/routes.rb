@@ -16,7 +16,7 @@ Rails.application.routes.draw do
     post "characters", to: 'characters#create'
     put "characters/:id", to: 'characters#update'
     delete "characters/:id", to: 'characters#destroy'
-    post "datafile", to: 'data#datafile'
+    get "datafile", to: 'data#datafile'
   end
   get "oauth2/login", to: 'oauth#login'
   get "oauth2/callback", to: 'oauth#callback'
