@@ -1,8 +1,14 @@
 class CharacterClass < ApplicationRecord
     has_many :specializations
     has_many :characters
-    alias_attribute :value, :id
-    alias_attribute :label, :name
+
+    def label
+      name.titlecase
+    end
+
+    def value
+      id
+    end
 
     def self.seed 
         spec_list =   [
