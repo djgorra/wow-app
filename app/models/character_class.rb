@@ -2,6 +2,14 @@ class CharacterClass < ApplicationRecord
     has_many :specializations
     has_many :characters
 
+    def label
+      name
+    end
+
+    def value
+      id
+    end
+
     def self.seed 
         spec_list =   [
             {
@@ -271,7 +279,7 @@ class CharacterClass < ApplicationRecord
 
     def as_json(options = {})
         out = {}
-        [:id, :name].each do |key|
+        [:id, :name, :label, :value].each do |key|
             out[key] = self.send(key)
         end
         out[:specializations]=specializations.as_json
