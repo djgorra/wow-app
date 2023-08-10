@@ -282,7 +282,6 @@ class CharacterClass < ApplicationRecord
         [:id, :name, :label, :value].each do |key|
             out[key] = self.send(key)
         end
-        out[:specializations]=specializations.as_json
         out
     end
 end

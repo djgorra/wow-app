@@ -6,7 +6,7 @@ class Specialization < ApplicationRecord
 
     def as_json(options = {})
     out = {}
-     [:label, :role, :buffs, :debuffs, :value].each do |key|
+     [:label, :role, :buffs, :debuffs, :value, :character_class_id].each do |key|
       out[key] = self.send(key)
     end
     out

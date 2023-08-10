@@ -3,6 +3,7 @@ class DataController < ApplicationController
     def datafile
       render :json=>{
         :classes=>CharacterClass.all.as_json,
+        :specs=>Specialization.all.as_json,
         :races=>Character.races.map{|r| {:label=>r.first, :value=>r.second}}, 
         :genders=>Character.genders.map{|g| {:label=>g.first, :value=>g.second}}
       }
