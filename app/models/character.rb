@@ -16,12 +16,9 @@ class Character < ApplicationRecord
 
     def as_json(options = {})
      out = {}
-      [:name, :race, :gender, :user_id].each do |key|
+      [:name, :race, :gender, :user_id, :primary_spec_id, :secondary_spec_id, :character_class_id].each do |key|
        out[key] = self.send(key)
      end
-     out[:primary_spec]=primary_spec.as_json
-     out[:secondary_spec]=secondary_spec.as_json
-     out[:character_class]=character_class.as_json
      out
     end
 end
