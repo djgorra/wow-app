@@ -37,7 +37,7 @@ class CharactersController < ApplicationController
       respond_to do |format|
         if @character.update!(character_params)
           format.html { redirect_to "/api/characters/#{@character.id}", notice: "Character was successfully updated." }
-          format.json { render json: @character, status: :ok}
+          format.json { render :json=>current_user.as_json, status: :created }
         else
           format.html { render :edit, status: :unprocessable_entity }
           format.json { render json: @character.errors, status: :unprocessable_entity }
