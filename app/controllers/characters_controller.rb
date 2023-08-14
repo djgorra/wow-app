@@ -55,7 +55,7 @@ class CharactersController < ApplicationController
 
       respond_to do |format|
         format.html { redirect_to characters_url, notice: "Character was successfully destroyed." }
-        format.json { head :current_user.as_json }
+        format.json { render json: :current_user.as_json }
       end
     else
       head :unauthorized
