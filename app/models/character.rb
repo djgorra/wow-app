@@ -20,7 +20,7 @@ class Character < ApplicationRecord
     end
 
     def class_icon
-      "/classes/classicon_#{character_class.gsub(" ", "").downcase}.jpg"
+      "/classes/classicon_#{character_class.name.gsub(" ", "").downcase}.jpg"
     end
 
     def as_json(options = {})
