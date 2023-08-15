@@ -6,6 +6,7 @@ class DataController < ApplicationController
         :specs=>Specialization.all.as_json,
         :races=>Character.races.map{|r| {:label=>r.first, :value=>r.first}}, 
         :genders=>Character.genders.map{|g| {:label=>g.first, :value=>g.first}}
+        :raids => Raid.all.as_json
       }
     end
 end
