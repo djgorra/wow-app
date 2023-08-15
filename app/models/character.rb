@@ -19,9 +19,13 @@ class Character < ApplicationRecord
       "/races/race_#{race.gsub(" ", "").gsub("_", "")}_#{gender}.jpg"
     end
 
+    def class_icon
+      "/classes/classicon_#{character_class.gsub(" ", "").downcase}.jpg"
+    end
+
     def as_json(options = {})
      out = {}
-      [:id, :name, :race, :gender, :user_id, :primary_spec_id, :secondary_spec_id, :character_class_id, :avatar].each do |key|
+      [:id, :name, :race, :gender, :user_id, :primary_spec_id, :secondary_spec_id, :character_class_id, :avatar, :class_icon].each do |key|
        out[key] = self.send(key)
      end
      out
