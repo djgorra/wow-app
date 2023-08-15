@@ -9,6 +9,14 @@ class Login::SessionsController < Devise::SessionsController
     request.delete_header('Authorization')
     super
   end
+
+  def uuid
+    if resource = User.find_by(:uuid=>params[:uuid])
+      respond_with(resource)
+    else
+      render :json => {:error => "UUID not found"}.to_json, :status => 500
+    end
+  end
     
     private  
 

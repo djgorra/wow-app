@@ -2,11 +2,17 @@ class User < ApplicationRecord
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable, :trackable and :omniauthable
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable, 
+         :recoverable, :rememberable, 
          :jwt_authenticatable, jwt_revocation_strategy: JwtDenylist
 
   has_one_attached :avatar
   has_many :characters, dependent: :destroy
+  validates_presence_of   :email, if: :email_required?
+  validates_presence_of   :password, if: :email_required?
+
+  def email_required?
+    battletag.blank?
+  end
   
   def self.expiration_time
     60.days

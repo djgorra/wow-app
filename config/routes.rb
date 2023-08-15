@@ -17,6 +17,9 @@ Rails.application.routes.draw do
     put "characters/:id", to: 'characters#update'
     delete "characters/:id", to: 'characters#destroy'
     get "datafile", to: 'data#datafile'
+    devise_scope :user do
+      post "users/uuid", to: "login/sessions#uuid"
+    end
   end
   get "oauth2/login", to: 'oauth#login'
   get "oauth2/callback", to: 'oauth#callback'

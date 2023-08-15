@@ -10,8 +10,8 @@ class OauthController < ApplicationController
     end
 
     def callback
-        email = params[:state]
-        user = User.find_by(email: email)
+        state = params[:state]
+        user = User.find_by_email(state)
         if Rails.env.test?
             data = YAML.load(open("spec/fixtures/battle_net.yml").read)
             @access =  data
@@ -25,11 +25,15 @@ class OauthController < ApplicationController
             @response = @access.get('/userinfo', params: {'region' => 'us', 'namespace' => 'profile-us', 'locale' => 'en_US'})
             data = JSON.parse(@response.body)
         end
+        if user.nil?
+            user = User.find_by_battletag(data["battletag"]) || User.new(:uuid=>state)
+        end
         user.wow_id=data["id"]
         user.battletag = data["battletag"]
-        user.access_token = @access.to_hash["access_token"]
-        user.access_token_expires_at = Time.at(@access.to_hash["expires_at"])
-        user.access_token_hash = @access.to_hash
-        user.save
+        user.uuid = state unless state.include?("@")
+        # user.access_token = @access.to_hash["access_token"]
+        # user.access_token_expires_at = Time.at(@access.to_hash["expires_at"])
+        # user.access_token_hash = @access.to_hash
+        user.save!
     end
 end
