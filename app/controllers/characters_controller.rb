@@ -37,7 +37,7 @@ class CharactersController < ApplicationController
       respond_to do |format|
         if @character.update!(character_params)
           format.html { redirect_to "/api/characters/#{@character.id}", notice: "Character was successfully updated." }
-          format.json { render json: @character, status: :ok}
+          format.json { render :json=>current_user.as_json, status: :created }
         else
           format.html { render :edit, status: :unprocessable_entity }
           format.json { render json: @character.errors, status: :unprocessable_entity }
@@ -51,12 +51,12 @@ class CharactersController < ApplicationController
   # DELETE /characters/1 or /characters/1.json
   def destroy
     if current_user && @character.user_id == current_user.id
-    @character.destroy
+      @character.destroy
 
-    respond_to do |format|
-      format.html { redirect_to characters_url, notice: "Character was successfully destroyed." }
-      format.json { head :no_content }
-    end
+      respond_to do |format|
+        format.html { redirect_to characters_url, notice: "Character was successfully destroyed." }
+        format.json { render json: :current_user.as_json }
+      end
     else
       head :unauthorized
     end
