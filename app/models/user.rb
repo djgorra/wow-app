@@ -43,7 +43,7 @@ class User < ApplicationRecord
 
   def as_json(options = {})
     out = {:access_token=>generate_jwt, :expires_at=>User.expiration_time.from_now.to_i, :user=>{}}
-     [:id, :email, :username, :avatar_url].each do |key|
+     [:id, :email, :username, :avatar_url, :battletag].each do |key|
       out[:user][key] = self.send(key)
     end
     out[:characters]=characters.as_json
