@@ -20,6 +20,7 @@ Rails.application.routes.draw do
     devise_scope :user do
       post "users/uuid", to: "login/sessions#uuid"
     end
+    get "raids/:id/items", to: 'raids#items'
   end
   get "oauth2/login", to: 'oauth#login'
   get "oauth2/callback", to: 'oauth#callback'

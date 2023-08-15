@@ -6,6 +6,18 @@ class Item < ApplicationRecord
     belongs_to :boss, optional: true
     has_and_belongs_to_many :characters
 
+    def as_json(options = {})
+        out = {}
+        [:name, :image_path, :category, :subcategory, :item_level, :boss_id, :raid_id, :wow_id].each do |key|
+            out[key] = self.send(key)
+        end
+        out
+    end
+
+    def image_path
+        "/items/#{self.image_url}.jpg"
+    end
+
     def self.download_images
         Item.find_each do |item|
             begin
