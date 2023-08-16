@@ -4,12 +4,16 @@ class Specialization < ApplicationRecord
     alias_attribute :value, :id
     alias_attribute :label, :name
 
-    def as_json(options = {})
-    out = {}
-     [:label, :role, :buffs, :debuffs, :value, :character_class_id].each do |key|
-      out[key] = self.send(key)
+    def icon_path
+      "/specs/#{name.gsub(" ", "").gsub("_", "") + character_class.name.gsub(" ", "").gsub("_", "")}.png"
     end
-    out
-   end
+
+    def as_json(options = {})
+      out = {}
+      [:label, :role, :buffs, :debuffs, :value, :character_class_id, :icon_path].each do |key|
+        out[key] = self.send(key)
+      end
+      out
+    end
   
 end
