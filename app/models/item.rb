@@ -5,10 +5,12 @@ class Item < ApplicationRecord
     belongs_to :raid, optional: true
     belongs_to :boss, optional: true
     has_and_belongs_to_many :characters
+    alias_attribute :value, :id
+    alias_attribute :label, :name
 
     def as_json(options = {})
         out = {}
-        [:name, :image_path, :category, :subcategory, :item_level, :boss_id, :raid_id, :wow_id].each do |key|
+        [:name, :image_path, :category, :subcategory, :item_level, :boss_id, :raid_id, :wow_id, :value, :label].each do |key|
             out[key] = self.send(key)
         end
         out
@@ -30,6 +32,14 @@ class Item < ApplicationRecord
               next
             end
         end
+    end
+
+    def after_seed
+        #i.e. fill in raid_id that is missing when boss_id is present
+      Item.where("raid_id is null and boss_id is not null").each do |item|
+        item.raid_id = item.boss.raid_id
+        item.save
+      end
     end
 
     def self.seed
