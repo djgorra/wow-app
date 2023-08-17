@@ -7,7 +7,7 @@ class DataController < ApplicationController
         :races=>Character.races.map{|r| {:label=>r.first, :value=>r.first}}, 
         :genders=>Character.genders.map{|g| {:label=>g.first, :value=>g.first}},
         :raids => Raid.all.as_json,
-        :bosses=>Bosses.all.as_json
+        :bosses=>Boss.all.as_json
       }
     end
 end
