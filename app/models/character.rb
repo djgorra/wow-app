@@ -24,11 +24,11 @@ class Character < ApplicationRecord
     end
 
     def primary_spec_icon
-      "/specs/#{character_class.name.capitalize.gsub(" ", "").gsub("_", "")}#{primary_spec.name.gsub(" ", "").gsub("_", "")}.jpg"
+      "/specs/#{primary_spec.name.gsub(" ", "").gsub("_", "")}#{character_class.name.capitalize.gsub(" ", "").gsub("_", "")}.jpg"
     end
 
     def secondary_spec_icon
-      "/specs/#{character_class.name.capitalize.gsub(" ", "").gsub("_", "")}#{secondary_spec.name.gsub(" ", "").gsub("_", "")}.jpg"
+      "/specs/#{secondary_spec.name.gsub(" ", "").gsub("_", "")}#{character_class.name.capitalize.gsub(" ", "").gsub("_", "")}.jpg"
     end
 
     def as_json(options = {})
