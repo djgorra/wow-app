@@ -20,7 +20,7 @@ class Character < ApplicationRecord
     end
 
     def class_icon
-      "/classes/classicon_#{character_class.name.gsub(" ", "").downcase}.jpg"
+      "/classes/classicon_#{character_class.name.gsub(" ", "").gsub("_", "").downcase}.jpg"
     end
 
     def primary_spec_icon
