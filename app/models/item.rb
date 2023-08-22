@@ -10,7 +10,7 @@ class Item < ApplicationRecord
 
     def as_json(options = {})
         out = {}
-        [:name, :image_path, :category, :subcategory, :item_level, :boss_id, :raid_id, :wow_id, :value, :label].each do |key|
+        [:id, :name, :image_path, :category, :subcategory, :item_level, :boss_id, :raid_id, :wow_id, :value, :label].each do |key|
             out[key] = self.send(key)
         end
         out

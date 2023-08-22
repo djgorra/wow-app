@@ -12,6 +12,14 @@ class CharactersController < ApplicationController
     render json: @character
   end
 
+  def add_items
+    character = Character.find(params[:id])
+    params[:item_ids].each do |item_id|
+      character.items << Item.find(item_id)
+    end
+    render json: character.user.as_json
+  end
+
   # POST /characters or /characters.json
   def create
     if current_user

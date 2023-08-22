@@ -16,6 +16,7 @@ Rails.application.routes.draw do
     post "characters", to: 'characters#create'
     put "characters/:id", to: 'characters#update'
     delete "characters/:id", to: 'characters#destroy'
+    post "characters/:id/items", to: 'characters#add_items'
     get "datafile", to: 'data#datafile'
     devise_scope :user do
       post "users/uuid", to: "login/sessions#uuid"

@@ -1,6 +1,6 @@
 class Character < ApplicationRecord
-    #has_many :character_items
-    #has_many :items, through: :character_items
+    has_many :character_items
+    has_many :items, through: :character_items
     belongs_to :user
     belongs_to :character_class, optional: true
     belongs_to :primary_spec, class_name: "Specialization", foreign_key: "primary_spec_id"
