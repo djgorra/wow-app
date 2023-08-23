@@ -5,7 +5,8 @@ class Character < ApplicationRecord
     belongs_to :character_class, optional: true
     belongs_to :primary_spec, class_name: "Specialization", foreign_key: "primary_spec_id"
     belongs_to :secondary_spec, class_name: "Specialization", foreign_key: "secondary_spec_id", optional: true
-
+    has_many :wishlist_item_links, -> { where (["assigned = ?", false]) }, :foreign_key => "character_id", :class_name => "CharacterItem"
+    has_many :wishlist_items, :through=>:wishlist_item_links, :class_name=>"Item", :source=>:item
     validates_presence_of :name, :user_id, :character_class_id, :primary_spec_id
 
     enum :race => { "human"=>0, "gnome"=>1, "dwarf"=>2, "night_elf"=>3, "draenei"=>4,
@@ -33,7 +34,7 @@ class Character < ApplicationRecord
 
     def as_json(options = {})
      out = {}
-      [:id, :name, :race, :gender, :user_id, :primary_spec_id, :secondary_spec_id, :character_class_id, :avatar, :class_icon, :primary_spec_icon, :secondary_spec_icon].each do |key|
+      [:id, :name, :race, :gender, :user_id, :primary_spec_id, :secondary_spec_id, :character_class_id, :avatar, :class_icon, :primary_spec_icon, :secondary_spec_icon, :wishlist_items].each do |key|
        out[key] = self.send(key)
      end
      out

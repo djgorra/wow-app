@@ -14,6 +14,14 @@ class CharactersController < ApplicationController
 
   def add_items
     character = Character.find(params[:id])
+    raid = Raid.find(params[:raid_id])
+    character.wishlist_items.each do |item|
+      if item.raid == raid
+        #remove character_item
+        character.items.delete(item)
+      end
+    end
+
     params[:item_ids].each do |item_id|
       character.items << Item.find(item_id)
     end

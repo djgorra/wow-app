@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_08_15_192531) do
+ActiveRecord::Schema.define(version: 2023_08_23_183558) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -72,11 +72,11 @@ ActiveRecord::Schema.define(version: 2023_08_15_192531) do
     t.string "name", null: false
   end
 
-  create_table "character_items", force: :cascade do |t|
-    t.bigint "character_id", null: false
+  create_table "character_items", id: false, force: :cascade do |t|
+    t.bigint "id"
+    t.bigint "character_id"
     t.bigint "item_id"
-    t.index ["character_id"], name: "index_character_items_on_character_id"
-    t.index ["item_id"], name: "index_character_items_on_item_id"
+    t.boolean "assigned", default: false
   end
 
   create_table "characters", force: :cascade do |t|
@@ -139,14 +139,12 @@ ActiveRecord::Schema.define(version: 2023_08_15_192531) do
     t.string "username"
     t.integer "wow_id"
     t.string "battletag"
-    t.string "state"
+    t.string "uuid"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
-  add_foreign_key "character_items", "characters"
-  add_foreign_key "character_items", "items"
   add_foreign_key "characters", "character_classes"
   add_foreign_key "characters", "specializations", column: "primary_spec_id"
   add_foreign_key "characters", "specializations", column: "secondary_spec_id"
