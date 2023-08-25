@@ -29,14 +29,15 @@ RSpec.describe "/characters", type: :request do
     @spec = FactoryBot.create(:specialization, {:character_class_id=>@character_class.id})
     @spec2 = FactoryBot.create(:specialization, {:name=>"Fury", :character_class_id=>@character_class.id, :role=>@spec.role, :buffs=>@spec.buffs, :debuffs=>@spec.debuffs})
     @character = FactoryBot.create(:character, {:user_id=>@user.id, :character_class_id=>@character_class.id , :primary_spec_id=>@spec.id, :secondary_spec_id=>@spec2.id})
+    @raid = FactoryBot.create(:raid)
   end
 
   let(:valid_attributes) {
-    {:name=>"Fozzy", :user_id=>@user.id, :character_class_id=>@character_class.id , :primary_spec_id=>@spec.id, :secondary_spec_id=>@spec2.id}
+    {:name=>"Fozzy", :user_id=>@user.id, :character_class_id=>@character_class.id , :primary_spec_id=>@spec.id, :secondary_spec_id=>@spec2.id, :race=>"human", :gender=>"male"}
   }
 
   let(:invalid_attributes) {
-    {:name=>"", :user_id=>@user.id, :character_class_id=>@character_class.id , :primary_spec_id=>@spec.id, :secondary_spec_id=>@spec2.id}
+    {:name=>"", :user_id=>@user.id, :character_class_id=>@character_class.id , :primary_spec_id=>@spec.id, :secondary_spec_id=>@spec2.id, :race=>"human", :gender=>"male"}
   }
 
   # describe "GET /index" do
@@ -95,6 +96,40 @@ RSpec.describe "/characters", type: :request do
   #     end
     end
    end
+
+  describe "POST /add_item" do
+    context "with valid parameters" do
+      it "adds an item to the character" do
+        item = FactoryBot.create(:item)
+        expect {
+          post "/api/characters/#{@character.id}/items.json", params: { item_ids: [item.id], raid_id: @raid.id }
+        }.to change(CharacterItem, :count).by(1)
+      end
+    end
+
+    it "does not add an item to the character if it already exists" do
+      item = FactoryBot.create(:item)
+      FactoryBot.create(:character_item, {:character_id=>@character.id, :item_id=>item.id})
+      expect {
+      post "/api/characters/#{@character.id}/items.json", params: { item_ids: [item.id], raid_id: @raid.id }
+      }.to change(CharacterItem, :count).by(0)
+    end
+
+    it "deletes all other items from a raid" do
+      #i.e. adds 3 items to character wishlist. makes a request to add just the first item to wishlist. should delete the other 2
+      item = FactoryBot.create(:item, {:raid_id=>@raid.id})
+      item2 = FactoryBot.create(:item, {:raid_id=>@raid.id})
+      item3 = FactoryBot.create(:item, {:raid_id=>@raid.id})
+      FactoryBot.create(:character_item, {:character_id=>@character.id, :item_id=>item.id})
+      FactoryBot.create(:character_item, {:character_id=>@character.id, :item_id=>item2.id})
+      FactoryBot.create(:character_item, {:character_id=>@character.id, :item_id=>item3.id})
+      assert_equal 3, @character.items.count
+      expect {
+      post "/api/characters/#{@character.id}/items.json", params: { item_ids: [item.id], raid_id: @raid.id }
+      }.to change(CharacterItem, :count).by(-2)
+      assert_equal 1, @character.items.count
+    end
+  end
 
   describe "PATCH /update" do
     context "with valid parameters" do

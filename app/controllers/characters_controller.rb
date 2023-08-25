@@ -23,7 +23,9 @@ class CharactersController < ApplicationController
     end
 
     params[:item_ids].each do |item_id|
-      character.items << Item.find(item_id)
+      if !character.items.include?(Item.find(item_id))
+        character.items << Item.find(item_id)
+      end
     end
     render json: character.user.as_json
   end
