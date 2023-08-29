@@ -15,11 +15,13 @@ RSpec.describe "/friends", type: :request do
     @bob = FactoryBot.create(:user, :battletag=>"WhiteMist#52")
     post "/api/users/sign_in", {:params=>{:user=>{:email=>@bob.email, :password=>@bob.password}}}   
     assert_response :success
+    data = JSON.parse(response.body)
+    @token = data["access_token"]
 
     @user2 = FactoryBot.create(:user, :battletag=>"JazzyJaguar#15")
   end
 
-  describe "Friends" do
+  describe "FriendList" do
 
       it "adds a friend" do
         post "/api/friendlist", {:params=>{:friend=>{:battletag=>"JazzyJaguar#15"}}}
@@ -27,8 +29,16 @@ RSpec.describe "/friends", type: :request do
         assert @user2.friends.include?(@bob)
       end
       it "adds a friend who hasn't signed up yet" do
-        post "/api/friendlist", {:params=>{:friend=>{:battletag=>"JollyLead#31"}}}
-        @jill = FactoryBot.create(:user, :battletag=>"JollyLead#31")
+        post "/api/friendlist", {:params=>{:friend=>{:battletag=>"NiceBest#1557"}}}
+        delete "/api/users/sign_out.json", headers: { "Authorization" => "Bearer #{@token}" } #i.e. logout
+
+        @jill = FactoryBot.create(:user)
+        #i.e. log in as Jill
+        post "/api/users/sign_in", {:params=>{:user=>{:email=>@bob.email, :password=>@bob.password}}}   
+        #i.e. connect Battletag account
+        get "/oauth2/callback", {:params=>{:state=>@jill.email, :code=>rand(18)}}
+        assert_response :success
+
         assert @bob.friends.include?(@jill)
         assert @jill.friends.include?(@bob)
 
