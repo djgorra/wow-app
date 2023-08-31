@@ -101,9 +101,10 @@ RSpec.describe "/characters", type: :request do
     context "with valid parameters" do
       it "adds an item to the character" do
         item = FactoryBot.create(:item)
+        item2 = FactoryBot.create(:item)
         expect {
-          post "/api/characters/#{@character.id}/items.json", params: { item_ids: [item.id], raid_id: @raid.id }
-        }.to change(CharacterItem, :count).by(1)
+          post "/api/characters/#{@character.id}/items.json", params: { item_ids: [item.id, item2.id], raid_id: @raid.id }
+        }.to change(CharacterItem, :count).by(2)
       end
     end
 

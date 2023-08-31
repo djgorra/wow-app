@@ -9,6 +9,15 @@ class User < ApplicationRecord
   has_many :characters, dependent: :destroy
   validates_presence_of   :email, if: :email_required?
   validates_presence_of   :password, if: :email_required?
+  has_many :friends
+
+  def friendlist
+    list = []
+    friends.each do |friend|
+      list << friend.friend
+    end
+    list
+  end
 
   def email_required?
     battletag.blank?

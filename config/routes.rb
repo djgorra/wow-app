@@ -11,13 +11,23 @@ Rails.application.routes.draw do
              }
     # devise_for :users, controllers: { sessions: :sessions },
     #                    path_names: { sign_in: :login }
+
+    # characters
     get "characters", to: 'characters#index'
     get "characters/:id", to: 'characters#show'
     post "characters", to: 'characters#create'
     put "characters/:id", to: 'characters#update'
     delete "characters/:id", to: 'characters#destroy'
     post "characters/:id/items", to: 'characters#add_items'
+
+    # data
     get "datafile", to: 'data#datafile'
+
+    # friends
+    get "friendlist", to: 'friends#index'
+    post "friendlist", to: 'friends#create'
+    delete "friendlist", to: 'friends#destroy'
+    
     devise_scope :user do
       post "users/uuid", to: "login/sessions#uuid"
     end
