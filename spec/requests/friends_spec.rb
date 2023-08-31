@@ -22,6 +22,7 @@ RSpec.describe "/friends", type: :request do
 
       it "adds a friend" do
         post "/api/friendlist", {:params=>{:friend=>{:battletag=>"JazzyJaguar#15"}}}
+        puts response.body
         assert @bob.friendlist.include?(@user2)
       end
       # it "adds a friend who hasn't signed up yet" do
@@ -33,6 +34,7 @@ RSpec.describe "/friends", type: :request do
       it "removes a friend" do
         friend = Friend.create(user_id: @bob.id, friend_id: @user2.id)
         delete "/api/friendlist", {:params=>{:friend=>{:battletag=>@user2.battletag}}}
+        puts response.body
         assert !@bob.friendlist.include?(@user2)
       end
   end

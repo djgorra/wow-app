@@ -10,7 +10,7 @@ class User < ApplicationRecord
   validates_presence_of   :email, if: :email_required?
   validates_presence_of   :password, if: :email_required?
   has_many :friends
-
+  
   def friendlist
     list = []
     friends.each do |friend|
