@@ -16,9 +16,9 @@ class CharactersController < ApplicationController
     character = Character.find(params[:id])
     raid = Raid.find(params[:raid_id])
     character.wishlist_items.each do |item|
-      if item.raid == raid
+      if item[:raid_id].to_s == raid.id.to_s
         #remove character_item
-        character.items.delete(item)
+        character.items.delete(Item.find(item[:id]))
       end
     end
 

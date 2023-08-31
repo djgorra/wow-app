@@ -8,19 +8,20 @@ class User < ApplicationRecord
   has_one_attached :avatar
   has_many :characters, dependent: :destroy
   validates_presence_of   :email, if: :email_required?
-  validates_presence_of   :password, if: :email_required?
+  validates_presence_of :password, if: :password_required?
   has_many :friends
+  validates :password, length: { minimum: 6 }, allow_blank: true, if: :password_required?
   
   def friendlist
-    list = []
-    friends.each do |friend|
-      list << friend.friend
-    end
-    list
+    friends.map{|friend| friend.friend.friend_json}
   end
 
   def email_required?
     battletag.blank?
+  end
+
+  def password_required?
+    battletag.blank? && new_record?
   end
   
   def self.expiration_time
@@ -48,6 +49,14 @@ class User < ApplicationRecord
     else
       nil
     end
+  end
+
+  def friend_json
+    {:id=>id, 
+      :username=>username, 
+      :battletag=>battletag, 
+      :characters=>characters, 
+      :avatar_url=>avatar_url}
   end
 
   def as_json(options = {})

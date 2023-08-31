@@ -16,7 +16,7 @@ describe DataController, :type=>:request do
       @item = FactoryBot.create(:item, {:raid_id=>@raid.id})
     end
     it "gets class and raid data" do
-      post "/api/datafile", { :params=>{}, headers: { "HTTP_AUTHORIZATION" =>"Bearer #{@token}" }}
+      get "/api/datafile", { :params=>{}, headers: { "HTTP_AUTHORIZATION" =>"Bearer #{@token}" }}
       assert_response :success
     end
 
