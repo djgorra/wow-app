@@ -13,7 +13,7 @@ class User < ApplicationRecord
   validates :password, length: { minimum: 6 }, allow_blank: true, if: :password_required?
   
   def friendlist
-    friends.map{|friend| friend.friend.friend_json}
+    friends.reload.map{|friend| friend.friend.friend_json}
   end
 
   def email_required?
