@@ -14,15 +14,14 @@ class FriendsController < ApplicationController
                 return
             end
 
-            render json: current_user.reload.friendlist
+            render json: current_user.friendlist
         else
             render json: {errors: "Friend not found"}, status: :unprocessable_entity
         end
     end
 
     def destroy
-        friend_user = User.find_by_battletag(params[:friend][:battletag])
-        friend = Friend.find_by_friend_id(friend_user.id)
+        friend = Friend.where(:user_id=>current_user.id, :friend_id=>params[:id]).first
         friend.destroy
         render json: current_user.friendlist
     end

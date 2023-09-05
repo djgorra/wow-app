@@ -26,8 +26,8 @@ Rails.application.routes.draw do
     # friends
     get "friendlist", to: 'friends#index'
     post "friendlist", to: 'friends#create'
-    delete "friendlist", to: 'friends#destroy'
-    
+    delete "friendlist/:id", to: 'friends#destroy'
+
     devise_scope :user do
       post "users/uuid", to: "login/sessions#uuid"
     end

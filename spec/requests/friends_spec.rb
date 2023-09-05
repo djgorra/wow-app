@@ -32,7 +32,7 @@ RSpec.describe "/friends", type: :request do
       # end
       it "removes a friend" do
         friend = Friend.create(user_id: @bob.id, friend_id: @user2.id)
-        delete "/api/friendlist", {:params=>{:friend=>{:battletag=>@user2.battletag}}}
+        delete "/api/friendlist/#{@user2.id}"
         assert !@bob.friendlist.include?(@user2)
       end
   end
