@@ -10,13 +10,13 @@ class FriendsController < ApplicationController
             if !current_user.friendlist.include?(user)
                 friend = Friend.create(user_id: current_user.id, friend_id: user.id)
             else
-                render json: {errors: "Friend already added"}
+                render json: {message: "Friend already added"}
                 return
             end
 
             render json: current_user.friendlist
         else
-            render json: {errors: "Friend not found"}, status: :unprocessable_entity
+            render json: {message: "Friend not found"}, status: :unprocessable_entity
         end
     end
 
