@@ -5,7 +5,8 @@ class FriendsController < ApplicationController
     end
 
     def create
-        user = User.find_by_battletag(params[:friend][:battletag]) || User.find_by_username(params[:friend][:battletag])
+        battletag = params[:friend][:battletag].to_s.gsub("-HASHTAG-", "#")
+        user = User.find_by_battletag(battletag) || User.find_by_username(battletag)
         if user
             if !current_user.friendlist.include?(user)
                 friend = Friend.create(user_id: current_user.id, friend_id: user.id)
