@@ -1,5 +1,7 @@
 class Character < ApplicationRecord
     has_many :character_items
+    has_many :team_characters
+    has_many :teams, through: :team_characters
     has_many :items, through: :character_items
     belongs_to :user
     belongs_to :character_class, optional: true

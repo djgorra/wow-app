@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_08_30_185419) do
+ActiveRecord::Schema.define(version: 2023_09_14_172549) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -62,10 +62,25 @@ ActiveRecord::Schema.define(version: 2023_08_30_185419) do
     t.index ["reset_password_token"], name: "index_admin_users_on_reset_password_token", unique: true
   end
 
+  create_table "battles", force: :cascade do |t|
+    t.bigint "run_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "boss_id"
+    t.index ["run_id"], name: "index_battles_on_run_id"
+  end
+
   create_table "bosses", force: :cascade do |t|
     t.bigint "raid_id"
     t.string "name"
     t.index ["raid_id"], name: "index_bosses_on_raid_id"
+  end
+
+  create_table "character_battles", force: :cascade do |t|
+    t.bigint "character_id", null: false
+    t.bigint "battle_id", null: false
+    t.index ["battle_id"], name: "index_character_battles_on_battle_id"
+    t.index ["character_id"], name: "index_character_battles_on_character_id"
   end
 
   create_table "character_classes", force: :cascade do |t|
@@ -93,6 +108,14 @@ ActiveRecord::Schema.define(version: 2023_08_30_185419) do
     t.index ["primary_spec_id"], name: "index_characters_on_primary_spec_id"
     t.index ["secondary_spec_id"], name: "index_characters_on_secondary_spec_id"
     t.index ["user_id"], name: "index_characters_on_user_id"
+  end
+
+  create_table "drops", force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.bigint "character_battle_id", null: false
+    t.integer "item_id"
+    t.index ["character_battle_id"], name: "index_drops_on_character_battle_id"
   end
 
   create_table "friends", force: :cascade do |t|
@@ -126,6 +149,15 @@ ActiveRecord::Schema.define(version: 2023_08_30_185419) do
     t.string "wow_id"
   end
 
+  create_table "runs", force: :cascade do |t|
+    t.bigint "team_id", null: false
+    t.bigint "raid_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["raid_id"], name: "index_runs_on_raid_id"
+    t.index ["team_id"], name: "index_runs_on_team_id"
+  end
+
   create_table "specializations", force: :cascade do |t|
     t.string "name", null: false
     t.integer "role", null: false
@@ -133,6 +165,23 @@ ActiveRecord::Schema.define(version: 2023_08_30_185419) do
     t.string "debuffs", default: [], array: true
     t.bigint "character_class_id"
     t.index ["character_class_id"], name: "index_specializations_on_character_class_id"
+  end
+
+  create_table "team_characters", force: :cascade do |t|
+    t.bigint "team_id", null: false
+    t.bigint "character_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["character_id"], name: "index_team_characters_on_character_id"
+    t.index ["team_id"], name: "index_team_characters_on_team_id"
+  end
+
+  create_table "teams", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_teams_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -152,11 +201,20 @@ ActiveRecord::Schema.define(version: 2023_08_30_185419) do
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "battles", "runs"
+  add_foreign_key "character_battles", "battles"
+  add_foreign_key "character_battles", "characters"
   add_foreign_key "characters", "character_classes"
   add_foreign_key "characters", "specializations", column: "primary_spec_id"
   add_foreign_key "characters", "specializations", column: "secondary_spec_id"
   add_foreign_key "characters", "users"
+  add_foreign_key "drops", "character_battles"
   add_foreign_key "items", "bosses"
   add_foreign_key "items", "raids"
+  add_foreign_key "runs", "raids"
+  add_foreign_key "runs", "teams"
   add_foreign_key "specializations", "character_classes"
+  add_foreign_key "team_characters", "characters"
+  add_foreign_key "team_characters", "teams"
+  add_foreign_key "teams", "users"
 end

@@ -28,6 +28,21 @@ Rails.application.routes.draw do
     post "friendlist", to: 'friends#create'
     delete "friendlist/:id", to: 'friends#destroy'
 
+    #teams
+    get "teams", to: 'teams#index'
+    get "teams/:id", to: 'teams#show'
+    post "teams", to: 'teams#create'
+    put "teams/:id", to: 'teams#update'
+    delete "teams/:id", to: 'teams#destroy'
+    post "teams/:id/characters", to: 'teams#add_characters'
+    delete "teams/:id/characters", to: 'teams#remove_characters'
+
+    #runs 
+    get "/teams/:team_id/runs", to: 'runs#index'
+    get "/teams/:team_id/runs/:id", to: 'runs#show'
+    post "/teams/:team_id/runs", to: 'runs#create'
+    get "/teams/:team_id/runs/:id/drops", to: 'runs#drops'
+
     devise_scope :user do
       post "users/uuid", to: "login/sessions#uuid"
     end

@@ -10,6 +10,7 @@ class User < ApplicationRecord
   validates_presence_of   :email, if: :email_required?
   validates_presence_of :password, if: :password_required?
   has_many :friends
+  has_many :teams
   validates :password, length: { minimum: 6 }, allow_blank: true, if: :password_required?
   
   def friendlist
