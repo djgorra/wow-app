@@ -8,8 +8,8 @@ local:
 
 amazon:
   service: S3
-  access_key_id: AKIAUQQ3UMGDJ24K3XPJ
-  secret_access_key: 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
+  access_key_id: ENV['AWS_ACCESS_KEY_ID']
+  secret_access_key: ENV['AWS_SECRET_ACCESS_KEY']
   bucket: wow-app-123
   region: us-east-2 # e.g. 'us-east-1'
 
