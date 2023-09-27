@@ -6,8 +6,8 @@ class TeamsController < ApplicationController
     end
 
     def create
-        team = Team.create(team_params)
-        render json: team
+        team = current_user.teams.create(team_params)
+        render json: current_user.teams
     end
 
     def show
@@ -43,7 +43,7 @@ class TeamsController < ApplicationController
 
     private
     def team_params
-        params.require(:team).permit(:name, :user_id)
+        params.require(:team).permit(:name)
     end
 
     
