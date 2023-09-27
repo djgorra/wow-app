@@ -2,7 +2,7 @@ require 'oauth2'
 
 class OauthController < ApplicationController
     def login
-        client = OAuth2::Client.new('6e5be73d7bb84defbfe49d9fb5eb4581', 'R2ulNak8YNKGV4UNoQ74yonVEq4zPMT1',
+        client = OAuth2::Client.new(ENV["OAUTH_ID"], ENV["OAUTH_SECRET"],
             site: 'https://oauth.battle.net/',
             authorize_url: '/authorize',
             token_url: '/token')
@@ -17,7 +17,7 @@ class OauthController < ApplicationController
             @access =  data
         else
             code = params[:code]
-            client = OAuth2::Client.new('6e5be73d7bb84defbfe49d9fb5eb4581', 'R2ulNak8YNKGV4UNoQ74yonVEq4zPMT1',
+            client = OAuth2::Client.new(ENV["OAUTH_ID"], ENV["OAUTH_SECRET"],
                                 site: 'https://oauth.battle.net',
                                 authorize_url: '/authorize',
                                 token_url: '/token')

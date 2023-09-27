@@ -69,5 +69,42 @@ class User < ApplicationRecord
     out
   end
 
+  def self.seed
+    25.times do |i|
+      unless User.find_by(email: "test#{i}@test")
+        User.create(
+          email: "test#{i}@test",
+          username: "test#{i}",
+          password: "test#{i}",
+          password_confirmation: "test#{i}",
+          battletag: "test#{i}#1234"
+        )
+      end
+
+      unless i==0 #skips first user, adds all subsequent users to user0's friendlist
+        Friend.create(
+          user_id: User.find_by(email: "test0@test").id,
+          friend_id: User.last.id
+        )
+      end
+    end
+
+    i=User.last.id
+    Specialization.all.each do |s| 
+      unless Character.find_by(name: "#{s.name}#{s.character_class.name}")
+        Character.create(
+          name: "#{s.name}#{s.character_class.name}",
+          user_id: i,
+          character_class_id: s.character_class_id,
+          primary_spec_id: s.id,
+          secondary_spec_id: s.character_class.specializations.last.id,
+          race: rand(4),
+          gender: rand(2)
+        )
+      end
+      i-=1
+    end
+
+  end
 
 end
