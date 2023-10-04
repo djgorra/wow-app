@@ -29,9 +29,7 @@ class TeamsController < ApplicationController
 
     def add_characters
         team = Team.find(params[:id])
-        params[:character_ids].each do |id|
-            TeamCharacter.create(team_id: team.id, character_id: id)
-        end
+        TeamCharacter.create(team_id: team.id, character_id: params[:character_id])
         render json: team
     end
 

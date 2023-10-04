@@ -43,10 +43,13 @@ Rails.application.routes.draw do
     post "/teams/:team_id/runs", to: 'runs#create'
     get "/teams/:team_id/runs/:id/drops", to: 'runs#drops'
 
+    #raids
+    get "raids/:id/items", to: 'raids#items'
+    get "raids", to: 'raids#index'
+
     devise_scope :user do
       post "users/uuid", to: "login/sessions#uuid"
     end
-    get "raids/:id/items", to: 'raids#items'
   end
   get "oauth2/login", to: 'oauth#login'
   get "oauth2/callback", to: 'oauth#callback'
