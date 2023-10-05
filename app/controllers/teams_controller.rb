@@ -35,7 +35,7 @@ class TeamsController < ApplicationController
 
     def remove_characters
         team = Team.find(params[:id])
-        team.characters.delete(Character.find(params[:character_ids]))
+        team.characters.delete(Character.find(params[:character_id]))
         render json: team
     end
 

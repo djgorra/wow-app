@@ -39,7 +39,7 @@ RSpec.describe "/teams", type: :request do
     it "adds a character to a team" do
         team = FactoryBot.create(:team)
         expect {
-            post "/api/teams/#{team.id}/characters", params: { character_ids: [@character.id] }
+            post "/api/teams/#{team.id}/characters", params: { character_id: @character.id }
         }.to change(team.characters, :count).by(1)
 
     end
@@ -48,7 +48,7 @@ RSpec.describe "/teams", type: :request do
         team = FactoryBot.create(:team)
         tc = FactoryBot.create(:team_character, {:team_id=>team.id, :character_id=>@character.id})
         expect {
-            delete "/api/teams/#{team.id}/characters", params: { character_ids: [@character.id]}
+            delete "/api/teams/#{team.id}/characters", params: { character_id: @character.id}
         }.to change(team.characters, :count).by(-1)        
     end
 
