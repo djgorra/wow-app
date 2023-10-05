@@ -29,7 +29,7 @@ class TeamsController < ApplicationController
 
     def add_characters
         team = Team.find(params[:id])
-        TeamCharacter.create(team_id: team.id, character_id: params[:character_id])
+        TeamCharacter.find_or_create_by!(team_id: team.id, character_id: params[:character_id])
         render json: team
     end
 
