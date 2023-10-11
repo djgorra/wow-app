@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_09_14_172549) do
+ActiveRecord::Schema.define(version: 2023_10_11_181039) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -74,6 +74,13 @@ ActiveRecord::Schema.define(version: 2023_09_14_172549) do
     t.bigint "raid_id"
     t.string "name"
     t.index ["raid_id"], name: "index_bosses_on_raid_id"
+  end
+
+  create_table "buffs", force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+    t.string "icon"
+    t.string "effect_type"
   end
 
   create_table "character_battles", force: :cascade do |t|
@@ -158,13 +165,35 @@ ActiveRecord::Schema.define(version: 2023_09_14_172549) do
     t.index ["team_id"], name: "index_runs_on_team_id"
   end
 
+  create_table "spec_spells", force: :cascade do |t|
+    t.bigint "specialization_id"
+    t.bigint "spell_id"
+    t.index ["specialization_id"], name: "index_spec_spells_on_specialization_id"
+    t.index ["spell_id"], name: "index_spec_spells_on_spell_id"
+  end
+
   create_table "specializations", force: :cascade do |t|
     t.string "name", null: false
     t.integer "role", null: false
-    t.string "buffs", default: [], array: true
-    t.string "debuffs", default: [], array: true
     t.bigint "character_class_id"
     t.index ["character_class_id"], name: "index_specializations_on_character_class_id"
+  end
+
+  create_table "specs_spells", force: :cascade do |t|
+    t.bigint "specialization_id"
+    t.bigint "spell_id"
+    t.index ["specialization_id"], name: "index_specs_spells_on_specialization_id"
+    t.index ["spell_id"], name: "index_specs_spells_on_spell_id"
+  end
+
+  create_table "spells", force: :cascade do |t|
+    t.bigint "specialization_id"
+    t.bigint "buff_id"
+    t.string "icon"
+    t.string "description"
+    t.string "name"
+    t.index ["buff_id"], name: "index_spells_on_buff_id"
+    t.index ["specialization_id"], name: "index_spells_on_specialization_id"
   end
 
   create_table "team_characters", force: :cascade do |t|
