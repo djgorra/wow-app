@@ -12,13 +12,10 @@ class DataController < ApplicationController
     end
 
     def buffs 
-        render json: {
-            buffs: Buff.buffs,
-            external_buffs: Buff.external_buffs,
-            damage_reductions: Buff.damage_reductions,
-            debuffs: Buff.debuffs,
-            mana_regeneration: Buff.mana_regeneration,
-            health_regeneration: Buff.health_regeneration
-        }
+      out = []
+      effect_types.each do |effect_type|
+        out << {:title=>effect_type, :data=> Buff.where(:effect_type=>effect_type).pluck(:name, :id)}
+      end
+      out
     end
 end
