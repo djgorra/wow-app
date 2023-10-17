@@ -17,6 +17,6 @@ class DataController < ApplicationController
       effect_types.each do |effect_type|
         out << {:title=>effect_type, :data=> Buff.where(:effect_type=>effect_type).as_json}
       end
-      out
+      render json: out
     end
 end
