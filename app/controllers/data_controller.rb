@@ -13,8 +13,9 @@ class DataController < ApplicationController
 
     def buffs 
       out = []
+      effect_types = Buff.pluck(:effect_type).uniq
       effect_types.each do |effect_type|
-        out << {:title=>effect_type, :data=> Buff.where(:effect_type=>effect_type).pluck(:name, :id)}
+        out << {:title=>effect_type, :data=> Buff.where(:effect_type=>effect_type).as_json}
       end
       out
     end
