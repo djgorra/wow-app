@@ -67,4 +67,9 @@ class Buff < ApplicationRecord
         end
 
     end
+
+    def index
+        buffs = Buff.all
+        render json: buffs
+    end
 end

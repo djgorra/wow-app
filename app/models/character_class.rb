@@ -270,8 +270,6 @@ class CharacterClass < ApplicationRecord
                 name:spec[:name],
                 character_class_id:CharacterClass.find_by(name: spec[:char_class]).id,
                 role:spec[:role],
-                buffs:spec[:buffs],
-                debuffs:spec[:debuffs]
             )
         end
         
