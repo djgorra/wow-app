@@ -10,4 +10,15 @@ class DataController < ApplicationController
         :bosses=>Boss.all.as_json
       }
     end
+
+    def buffs 
+        render json: {
+            buffs: Buff.buffs,
+            external_buffs: Buff.external_buffs,
+            damage_reductions: Buff.damage_reductions,
+            debuffs: Buff.debuffs,
+            mana_regeneration: Buff.mana_regeneration,
+            health_regeneration: Buff.health_regeneration
+        }
+    end
 end

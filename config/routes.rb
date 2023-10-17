@@ -48,7 +48,7 @@ Rails.application.routes.draw do
     get "raids", to: 'raids#index'
 
     #buffs
-    get "buffs", to: 'buffs#index'
+    get "buffs", to: 'data#buffs'
 
     devise_scope :user do
       post "users/uuid", to: "login/sessions#uuid"

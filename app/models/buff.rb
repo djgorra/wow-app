@@ -2,6 +2,21 @@ class Buff < ApplicationRecord
     has_many :spells
     has_many :specializations, through: :spells
 
+    scope :buffs, -> { where(effect_type: "buff") }
+    scope :external_buffs, -> { where(effect_type: "external_buff") }
+    scope :damage_reductions, -> { where(effect_type: "damage_reduction") }
+    scope :debuffs, -> { where(effect_type: "debuff") }
+    scope :mana_regeneration, -> { where(effect_type: "mana_regeneration") }
+    scope :health_regeneration, -> { where(effect_type: "health_regeneration") }
+
+    def as_json(options = {})
+        out = {}
+        [:id, :name, :effect_type].each do |key|
+            out[key] = self.send(key)
+        end
+        out
+    end
+
     def self.seed
         buffList = [
             {name: "Bloodlust/Heroism", effect_type:"buff"},
@@ -68,8 +83,4 @@ class Buff < ApplicationRecord
 
     end
 
-    def index
-        buffs = Buff.all
-        render json: buffs
-    end
 end
