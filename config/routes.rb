@@ -40,7 +40,7 @@ Rails.application.routes.draw do
     #runs 
     get "/teams/:team_id/runs", to: 'runs#index'
     get "/teams/:team_id/runs/:id", to: 'runs#show'
-    post "/teams/:team_id/runs", to: 'runs#create'
+    post "/teams/runs", to: 'runs#create'
     get "/teams/:team_id/runs/:id/drops", to: 'runs#drops'
     post "/teams/:team_id/runs/:id/battle", to: 'runs#start_battle'
 
