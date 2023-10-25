@@ -15,7 +15,7 @@ class Run < ApplicationRecord
 
     def as_json(options = {})
         out = {}
-        [:id, :name, :raid_id, :raid_name, :created_at, :team_characters, :battles].each do |key|
+        [:id, :name, :raid_id, :raid_name, :created_at, :battles].each do |key|
             out[key] = self.send(key)
         end
         out
