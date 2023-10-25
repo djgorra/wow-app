@@ -10,7 +10,7 @@ class RunsController < ApplicationController
         render json: run
     end
 
-    def start_battle
+    def battle
         run = Run.find(params[:id])
         battle = Battle.create(run_id: run.id, boss_id: params[:boss_id])
         run.team.characters.each do |c|
