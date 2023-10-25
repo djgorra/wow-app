@@ -22,7 +22,7 @@ RSpec.describe "/runs", type: :request do
 
     it "creates a new run" do
         expect {
-            post "/api/teams/#{@team.id}/runs", params: { run: valid_attributes }
+            post "/api/teams/#{@team.id}/runs", params: valid_attributes
         }.to change(Run, :count).by(1)
     end
 

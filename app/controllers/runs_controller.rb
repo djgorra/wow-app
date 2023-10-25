@@ -38,7 +38,7 @@ class RunsController < ApplicationController
     private
 
     def run_params
-        params.require(:run).permit(:team_id, :raid_id)
+        params.permit(:team_id, :raid_id)
     end
 
     def set_team
