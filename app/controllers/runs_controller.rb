@@ -10,21 +10,33 @@ class RunsController < ApplicationController
         render json: run
     end
 
+    def start_battle
+        run = Run.find(params[:id])
+        battle = Battle.create(run_id: run.id, boss_id: params[:boss_id])
+        run.team.characters.each do |c|
+            CharacterBattle.create(character_id: c.id, battle_id: battle.id)
+        end
+        render json: run
+    end
+
+    def create_drop
+        run = Run.find(params[:id])
+        drop = Drop.create(character_battle_id: params[:character_battle_id], item_id: params[:item_id])
+        render json: run
+    end
+
     def show
         run = Run.find(params[:id])
         render json: run
     end
 
-    def autobattle
-
-    end
-
-    def drops
-        run = Run.find(params[:id])
-        render json: run.drops
-    end
+    # def drops
+    #     run = Run.find(params[:id])
+    #     render json: run.drops
+    # end
 
     private
+
     def run_params
         params.require(:run).permit(:team_id, :raid_id)
     end

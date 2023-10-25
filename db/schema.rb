@@ -94,11 +94,12 @@ ActiveRecord::Schema.define(version: 2023_10_11_181039) do
     t.string "name", null: false
   end
 
-  create_table "character_items", id: false, force: :cascade do |t|
-    t.bigint "id"
-    t.bigint "character_id"
+  create_table "character_items", force: :cascade do |t|
+    t.bigint "character_id", null: false
     t.bigint "item_id"
     t.boolean "assigned", default: false
+    t.index ["character_id"], name: "index_character_items_on_character_id"
+    t.index ["item_id"], name: "index_character_items_on_item_id"
   end
 
   create_table "characters", force: :cascade do |t|
@@ -123,6 +124,13 @@ ActiveRecord::Schema.define(version: 2023_10_11_181039) do
     t.bigint "character_battle_id", null: false
     t.integer "item_id"
     t.index ["character_battle_id"], name: "index_drops_on_character_battle_id"
+  end
+
+  create_table "friendlists", force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "user_id"
+    t.string "battletag"
   end
 
   create_table "friends", force: :cascade do |t|
@@ -179,13 +187,6 @@ ActiveRecord::Schema.define(version: 2023_10_11_181039) do
     t.index ["character_class_id"], name: "index_specializations_on_character_class_id"
   end
 
-  create_table "specs_spells", force: :cascade do |t|
-    t.bigint "specialization_id"
-    t.bigint "spell_id"
-    t.index ["specialization_id"], name: "index_specs_spells_on_specialization_id"
-    t.index ["spell_id"], name: "index_specs_spells_on_spell_id"
-  end
-
   create_table "spells", force: :cascade do |t|
     t.bigint "specialization_id"
     t.bigint "buff_id"
@@ -233,6 +234,8 @@ ActiveRecord::Schema.define(version: 2023_10_11_181039) do
   add_foreign_key "battles", "runs"
   add_foreign_key "character_battles", "battles"
   add_foreign_key "character_battles", "characters"
+  add_foreign_key "character_items", "characters"
+  add_foreign_key "character_items", "items"
   add_foreign_key "characters", "character_classes"
   add_foreign_key "characters", "specializations", column: "primary_spec_id"
   add_foreign_key "characters", "specializations", column: "secondary_spec_id"

@@ -7,13 +7,13 @@ RSpec.describe "/runs", type: :request do
         @user = FactoryBot.create(:user)
         post "/api/users/sign_in", {:params=>{:user=>{:email=>@user.email, :password=>@user.password}}}   
         assert_response :success
-    
         @team = FactoryBot.create(:team, {:user_id=>@user.id})
         @character_class = FactoryBot.create(:character_class)
         @spec = FactoryBot.create(:specialization, {:character_class_id=>@character_class.id})
-        @spec2 = FactoryBot.create(:specialization, {:name=>"Fury", :character_class_id=>@character_class.id, :role=>@spec.role, :buffs=>@spec.buffs, :debuffs=>@spec.debuffs})
+        @spec2 = FactoryBot.create(:specialization, {:name=>"Fury", :character_class_id=>@character_class.id, :role=>@spec.role})
         @character = FactoryBot.create(:character, {:user_id=>@user.id, :character_class_id=>@character_class.id , :primary_spec_id=>@spec.id, :secondary_spec_id=>@spec2.id})
         @raid = FactoryBot.create(:raid)
+        @run = FactoryBot.create(:run, {:team_id=>@team.id, :raid_id=>@raid.id})
     end
 
     let(:valid_attributes) {
@@ -35,12 +35,24 @@ RSpec.describe "/runs", type: :request do
     it "shows a list of runs" do
         get "/api/teams/#{@team.id}/runs"
         assert_response :success
+        assert_equal @team.id, JSON.parse(response.body)[0]["team_id"]
+        assert_equal @raid.id, JSON.parse(response.body)[0]["raid_id"]
+
     end
 
     it "shows a particular run" do
-        run = FactoryBot.create(:run)
+        run = FactoryBot.create(:run, {:team_id=>@team.id, :raid_id=>@raid.id})
         get "/api/teams/#{run.team_id}/runs/#{run.id}"
         assert_response :success
+        assert_equal run.team_id, JSON.parse(response.body)["team_id"]
+        assert_equal run.raid_id, JSON.parse(response.body)["raid_id"]
+    end
+
+    it "creates a battle" do
+        boss = FactoryBot.create(:boss)
+        expect {
+            post "/api/teams/#{@team.id}/runs/#{@run.id}/battle", params: { boss_id: boss.id }
+        }.to change(CharacterBattle, :count).by(@team.characters.count)
     end
 
     it "shows drops for a run" do
@@ -50,9 +62,9 @@ RSpec.describe "/runs", type: :request do
         char_battle = FactoryBot.create(:character_battle, {:battle_id=>battle.id, :character_id=>@character.id})
         item = FactoryBot.create(:item)
         drop = FactoryBot.create(:drop, {:character_battle_id=>char_battle.id, :item_id=>item.id})
-        binding.irb
         get "/api/teams/#{run.team_id}/runs/#{run.id}/drops"
         assert_response :success
+        assert_equal item.id, JSON.parse(response.body)[0]["item_id"]
     end
 
 end
