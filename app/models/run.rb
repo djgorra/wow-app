@@ -8,14 +8,14 @@ class Run < ApplicationRecord
     def raid_name
         raid.name
     end
-
-    def name
-        "#{raid.name} - #{created_at.strftime("%m/%d/%Y")}"
+    
+    def timestamp
+        created_at.strftime("%m/%d/%y")
     end
 
     def as_json(options = {})
         out = {}
-        [:id, :name, :raid_id, :raid_name, :created_at, :battles].each do |key|
+        [:id, :raid_id, :raid_name, :timestamp, :battles].each do |key|
             out[key] = self.send(key)
         end
         out
