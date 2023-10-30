@@ -10,23 +10,14 @@ class RunsController < ApplicationController
         render json: run
     end
 
-    def battle
-        run = Run.find(params[:id])
-        battle = Battle.create(run_id: run.id, boss_id: params[:boss_id])
-        run.team.characters.each do |c|
-            CharacterBattle.create(character_id: c.id, battle_id: battle.id)
-        end
-        render json: run
-    end
-
-    def create_drop
-        run = Run.find(params[:id])
-        drop = Drop.create(character_battle_id: params[:character_battle_id], item_id: params[:item_id])
-        render json: run
-    end
-
     def show
         run = Run.find(params[:id])
+        if run.battles.empty?
+            run.raid.bosses.each do |b|
+                Battle.create(run_id: run.id, boss_id: b.id)
+            end
+        end
+        run.battles.reload
         render json: run
     end
 
