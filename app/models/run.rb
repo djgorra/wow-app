@@ -12,6 +12,10 @@ class Run < ApplicationRecord
         created_at.strftime("%m/%d/%y")
     end
 
+    def bosses
+        raid.bosses
+    end
+
     def drops
         out = []
         battles.each do |b|
@@ -24,7 +28,7 @@ class Run < ApplicationRecord
 
     def as_json(options = {})
         out = {}
-        [:id, :raid_id, :team_id, :raid_name, :timestamp, :battles].each do |key|
+        [:id, :raid_id, :team_id, :raid_name, :timestamp, :bosses, :battles].each do |key|
             out[key] = self.send(key)
         end
         out

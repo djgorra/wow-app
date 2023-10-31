@@ -7,6 +7,8 @@ RSpec.describe "/runs", type: :request do
         @user = FactoryBot.create(:user)
         post "/api/users/sign_in", {:params=>{:user=>{:email=>@user.email, :password=>@user.password}}}   
         assert_response :success
+        #signs in
+
         @team = FactoryBot.create(:team, {:user_id=>@user.id})
         @character_class = FactoryBot.create(:character_class)
         @spec = FactoryBot.create(:specialization, {:character_class_id=>@character_class.id})
