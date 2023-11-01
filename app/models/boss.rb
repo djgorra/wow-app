@@ -22,6 +22,13 @@ class Boss < ApplicationRecord
                 end
             end
         end
+    end
 
+    def as_json(options = {})
+        out = {}
+        [:id, :name, :raid_id, :items].each do |key|
+            out[key] = self.send(key)
+        end
+        out
     end
 end

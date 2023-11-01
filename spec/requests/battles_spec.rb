@@ -16,6 +16,7 @@ RSpec.describe "/battles", type: :request do
         @run = FactoryBot.create(:run, {:team_id=>@team.id, :raid_id=>@raid.id})
         @tc = TeamCharacter.create(team_id: @team.id, character_id: @character.id)
         @boss = FactoryBot.create(:boss, {:raid_id=>@raid.id})
+        @item = FactoryBot.create(:item, {:boss_id=>@boss.id, :raid_id=>@raid.id})
         @battle = FactoryBot.create(:battle, {:run_id=>@run.id, :boss_id=>@boss.id})
     end
 
@@ -25,6 +26,7 @@ RSpec.describe "/battles", type: :request do
         }.to change(CharacterBattle, :count).by(1)
         
         assert !JSON.parse(response.body)["drops"].nil?
+        binding.irb
     end
 
     it "creates a drop" do

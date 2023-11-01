@@ -1,8 +1,10 @@
 class BattlesController < ApplicationController
     def character_battles
         battle = Battle.find(params[:id])
-        battle.run.team.characters.each do |c|
-            CharacterBattle.create(character_id: c.id, battle_id: params[:id])
+        if !battle.character_battles.any?
+            battle.run.team.characters.each do |c|
+                CharacterBattle.create(character_id: c.id, battle_id: params[:id])
+            end
         end
         #drop = Drop.create(character_battle_id: params[:character_battle_id], item_id: params[:item_id])
         render json: battle

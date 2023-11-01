@@ -15,7 +15,7 @@ class Battle < ApplicationRecord
     
     def as_json(options = {})
         out = {}
-        [:characters, :drops].each do |key|
+        [:characters, :drops, :boss].each do |key|
             out[key] = self.send(key)
         end
         out
