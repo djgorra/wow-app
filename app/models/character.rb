@@ -3,6 +3,8 @@ class Character < ApplicationRecord
     has_many :team_characters
     has_many :teams, through: :team_characters
     has_many :items, through: :character_items
+    has_many :character_battles
+    has_many :battles, through: :character_battles
     belongs_to :user
     belongs_to :character_class, optional: true
     belongs_to :primary_spec, class_name: "Specialization", foreign_key: "primary_spec_id"

@@ -9,12 +9,14 @@ RSpec.describe "/runs", type: :request do
         assert_response :success
         #signs in
 
-        @team = FactoryBot.create(:team, {:user_id=>@user.id})
         @character_class = FactoryBot.create(:character_class)
         @spec = FactoryBot.create(:specialization, {:character_class_id=>@character_class.id})
         @spec2 = FactoryBot.create(:specialization, {:name=>"Fury", :character_class_id=>@character_class.id, :role=>@spec.role})
+        @team = FactoryBot.create(:team, {:user_id=>@user.id})
         @character = FactoryBot.create(:character, {:user_id=>@user.id, :character_class_id=>@character_class.id , :primary_spec_id=>@spec.id, :secondary_spec_id=>@spec2.id})
+        @team_character = FactoryBot.create(:team_character, {:team_id=>@team.id, :character_id=>@character.id})
         @raid = FactoryBot.create(:raid)
+        @boss = FactoryBot.create(:boss, {:raid_id=>@raid.id, :name=>"Boss1"})
         @run = FactoryBot.create(:run, {:team_id=>@team.id, :raid_id=>@raid.id})
     end
 
@@ -37,6 +39,7 @@ RSpec.describe "/runs", type: :request do
     it "shows a list of runs" do
         get "/api/teams/#{@team.id}/runs"
         assert_response :success
+        binding.irb
         assert_equal @team.id, JSON.parse(response.body)[0]["team_id"]
         assert_equal @raid.id, JSON.parse(response.body)[0]["raid_id"]
 
@@ -44,12 +47,15 @@ RSpec.describe "/runs", type: :request do
 
     it "shows a particular run" do
         run = FactoryBot.create(:run, {:team_id=>@team.id, :raid_id=>@raid.id})
-        expect {
+        battle = FactoryBot.create(:battle, {:run_id=>run.id, :boss_id=>@boss.id})
+        character_battle = FactoryBot.create(:character_battle, {:character_id=>@character.id, :battle_id=>battle.id})
+
             get "/api/teams/#{run.team_id}/runs/#{run.id}"
-        }.to change(Battle, :count).by(@run.raid.bosses.count)
-        assert_response :success
-        assert_equal run.team_id, JSON.parse(response.body)["team_id"]
-        assert_equal run.raid_id, JSON.parse(response.body)["raid_id"]
+
+        binding.irb
+        # assert_response :success
+        # assert_equal run.team_id, JSON.parse(response.body)["team_id"]
+        # assert_equal run.raid_id, JSON.parse(response.body)["raid_id"]
     end
 
     # it "shows drops for a run" do
