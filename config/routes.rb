@@ -50,6 +50,9 @@ Rails.application.routes.draw do
     get "raids/:id/items", to: 'raids#items'
     get "raids", to: 'raids#index'
 
+    #items
+    get "/battles/:battle_id/items/:id", to: 'items#show'
+
     #buffs
     get "buffs", to: 'data#buffs'
 
