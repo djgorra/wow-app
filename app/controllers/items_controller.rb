@@ -12,7 +12,7 @@ class ItemsController < ApplicationController
             end
         end
         non_wishlist_characters = battle.characters - wishlist_characters
-        render json: {item: item, wishlist_characters: wishlist_characters, non_wishlist_characters: non_wishlist_characters}
+        render json: {:item=>item, :characters=>[{:title=>"In Wishlist", :data=>wishlist_characters},{:title=>"Others", :data=>non_wishlist_characters} ]}
     end
 
 
