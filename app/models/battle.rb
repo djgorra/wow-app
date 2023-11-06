@@ -3,6 +3,7 @@ class Battle < ApplicationRecord
     belongs_to :boss
     has_many :character_battles
     has_many :drops, through: :character_battles
+    validates_uniqueness_of :run_id, :scope => :boss_id
 
     def characters
         out = []
