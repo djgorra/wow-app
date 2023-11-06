@@ -43,7 +43,8 @@ Rails.application.routes.draw do
     post "/teams/:team_id/runs", to: 'runs#create'
 
     #battles
-    post "battles/:id/character_battles", to: 'battles#character_battles'
+    post "battles", to: 'battles#create'
+    get "battles/:id", to: 'battles#show'
     post "battles/:id/create_drop", to: 'battles#create_drop'
 
     #raids

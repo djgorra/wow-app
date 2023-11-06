@@ -20,11 +20,10 @@ RSpec.describe "/battles", type: :request do
         @battle = FactoryBot.create(:battle, {:run_id=>@run.id, :boss_id=>@boss.id})
     end
 
-    it "creates character battles" do
+    it "creates a battle" do
         expect {
-            post "/api/battles/#{@battle.id}/character_battles"
-        }.to change(CharacterBattle, :count).by(1)
-        
+            post "/api/battles/", params: { :run_id=>@run.id, :boss_id=>@boss.id }
+        }.to change(CharacterBattle, :count).by(@run.team.characters.count)
         assert !JSON.parse(response.body)["drops"].nil?
         binding.irb
     end

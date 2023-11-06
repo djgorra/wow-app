@@ -39,7 +39,6 @@ RSpec.describe "/runs", type: :request do
     it "shows a list of runs" do
         get "/api/teams/#{@team.id}/runs"
         assert_response :success
-        binding.irb
         assert_equal @team.id, JSON.parse(response.body)[0]["team_id"]
         assert_equal @raid.id, JSON.parse(response.body)[0]["raid_id"]
 
@@ -50,12 +49,11 @@ RSpec.describe "/runs", type: :request do
         battle = FactoryBot.create(:battle, {:run_id=>run.id, :boss_id=>@boss.id})
         character_battle = FactoryBot.create(:character_battle, {:character_id=>@character.id, :battle_id=>battle.id})
 
-            get "/api/teams/#{run.team_id}/runs/#{run.id}"
-
+        get "/api/teams/#{run.team_id}/runs/#{run.id}"
         binding.irb
-        # assert_response :success
-        # assert_equal run.team_id, JSON.parse(response.body)["team_id"]
-        # assert_equal run.raid_id, JSON.parse(response.body)["raid_id"]
+        assert_response :success
+        assert_equal run.team_id, JSON.parse(response.body)["team_id"]
+        assert_equal run.raid_id, JSON.parse(response.body)["raid_id"]
     end
 
     # it "shows drops for a run" do
