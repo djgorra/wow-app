@@ -16,6 +16,7 @@ class DropsController < ApplicationController
     end
 
     def create
+        #needs battle_id, character_id, item_id, disenchanted
         battle = Battle.find(params[:battle_id])
         character_battle = CharacterBattle.find_by(character_id: params[:character_id], battle_id: battle.id)
         Drop.create(character_battle_id: character_battle.id, item_id: params[:item_id], disenchanted: params[:disenchanted])

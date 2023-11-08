@@ -2,7 +2,7 @@ class Drop < ApplicationRecord
     belongs_to :character_battle
     belongs_to :item
 
-    after_create :update_wishlist
+    before_create :update_wishlist
 
     def update_wishlist
         if self.item && !self.disenchanted

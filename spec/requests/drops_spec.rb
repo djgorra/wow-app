@@ -56,7 +56,6 @@ RSpec.describe "/drops", type: :request do
         }.to change(Drop, :count).by(1)
         assert_response :success
         assert_equal true, @character.character_items.first.assigned #asserts item in wishlist is assigned after drop is created
-        binding.irb
-        assert_equal 0, @character.wishlist_items.count #asserts character has no items in wishlist after drop is created
+        assert_equal 0, @character.reload.wishlist_items.count #asserts character has no items in wishlist after drop is created
     end
 end
