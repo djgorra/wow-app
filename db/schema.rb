@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2023_10_11_181039) do
+ActiveRecord::Schema.define(version: 2023_11_08_174653) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -123,6 +123,7 @@ ActiveRecord::Schema.define(version: 2023_10_11_181039) do
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "character_battle_id", null: false
     t.integer "item_id"
+    t.boolean "disenchanted", default: false
     t.index ["character_battle_id"], name: "index_drops_on_character_battle_id"
   end
 

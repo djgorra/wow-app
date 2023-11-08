@@ -1,4 +1,4 @@
-class ItemsController < ApplicationController
+class DropsController < ApplicationController
 
     def show
         battle = Battle.find(params[:battle_id])
@@ -15,5 +15,11 @@ class ItemsController < ApplicationController
         render json: {:item=>item, :characters=>[{:title=>"In Wishlist", :data=>wishlist_characters},{:title=>"Others", :data=>non_wishlist_characters} ]}
     end
 
+    def create
+        battle = Battle.find(params[:battle_id])
+        character_battle = CharacterBattle.find_by(character_id: params[:character_id], battle_id: battle.id)
+        Drop.create(character_battle_id: character_battle.id, item_id: params[:item_id], disenchanted: params[:disenchanted])
+        render json: battle
+    end
 
 end

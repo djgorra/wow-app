@@ -4,6 +4,7 @@ require 'open-uri'
 class Item < ApplicationRecord
     belongs_to :raid, optional: true
     belongs_to :boss, optional: true
+    has_many :drops
     has_and_belongs_to_many :characters
     alias_attribute :value, :id
     alias_attribute :label, :name
