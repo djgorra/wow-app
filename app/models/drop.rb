@@ -13,4 +13,12 @@ class Drop < ApplicationRecord
             #i.e. if the item is in the character's wishlist, mark it as assigned
         end
     end
+
+    def as_json(options = {})
+        out = {}
+        [:id, :item, :character_battle, :disenchanted].each do |key|
+            out[key] = self.send(key)
+        end
+        out
+    end
 end
