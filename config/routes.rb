@@ -45,7 +45,6 @@ Rails.application.routes.draw do
     #battles
     post "battles", to: 'battles#create'
     get "battles/:id", to: 'battles#show'
-    post "battles/:id/create_drop", to: 'battles#create_drop'
 
     #raids
     get "raids/:id/items", to: 'raids#items'

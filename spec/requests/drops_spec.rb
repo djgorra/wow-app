@@ -57,5 +57,7 @@ RSpec.describe "/drops", type: :request do
         assert_response :success
         assert_equal true, @character.character_items.first.assigned #asserts item in wishlist is assigned after drop is created
         assert_equal 0, @character.reload.wishlist_items.count #asserts character has no items in wishlist after drop is created
+        get "/api/battles/#{@battle.id}"
+        assert @battle.drops.present?
     end
 end

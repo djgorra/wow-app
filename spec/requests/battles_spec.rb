@@ -17,22 +17,30 @@ RSpec.describe "/battles", type: :request do
         @tc = TeamCharacter.create(team_id: @team.id, character_id: @character.id)
         @boss = FactoryBot.create(:boss, {:raid_id=>@raid.id})
         @item = FactoryBot.create(:item, {:boss_id=>@boss.id, :raid_id=>@raid.id})
-        @battle = FactoryBot.create(:battle, {:run_id=>@run.id, :boss_id=>@boss.id})
     end
-
+    
     it "creates a battle" do
         expect {
-            post "/api/battles/", params: { :run_id=>@run.id, :boss_id=>@boss.id }
+            expect {
+                post "/api/battles/", params: { :run_id=>@run.id, :boss_id=>@boss.id }
+            }.to change(Battle, :count).by(1)
         }.to change(CharacterBattle, :count).by(@run.team.characters.count)
         assert !JSON.parse(response.body)["drops"].nil?
-        binding.irb
-    end
+        puts response.body
 
-    it "creates a drop" do
-        cb = FactoryBot.create(:character_battle, {:battle_id=>@battle.id, :character_id=>@character.id})
-        item = FactoryBot.create(:item)
         expect {
-            post "/api/battles/#{@battle.id}/create_drop", params: { :character_id=>@character.id, item_id: item.id }
-    }.to change(Drop, :count).by(1)
+            expect {
+                post "/api/battles/", params: { :run_id=>@run.id, :boss_id=>@boss.id }
+            }.to change(Battle, :count).by(0)
+        }.to change(CharacterBattle, :count).by(0) #i.e. do not create new character_battles if battle already exists
+        
+    end
+    
+    it "returns an existing battle" do
+        @battle = FactoryBot.create(:battle, {:run_id=>@run.id, :boss_id=>@boss.id})
+        get "/api/battles/#{@battle.id}"
+        assert_response :success
+        assert_equal @battle.id, JSON.parse(response.body)["id"]
+        binding.irb
     end
 end
