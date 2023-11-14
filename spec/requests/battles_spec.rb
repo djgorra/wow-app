@@ -17,6 +17,7 @@ RSpec.describe "/battles", type: :request do
         @tc = TeamCharacter.create(team_id: @team.id, character_id: @character.id)
         @boss = FactoryBot.create(:boss, {:raid_id=>@raid.id})
         @item = FactoryBot.create(:item, {:boss_id=>@boss.id, :raid_id=>@raid.id})
+        
     end
     
     it "creates a battle" do
@@ -25,6 +26,7 @@ RSpec.describe "/battles", type: :request do
                 post "/api/battles/", params: { :run_id=>@run.id, :boss_id=>@boss.id }
             }.to change(Battle, :count).by(1)
         }.to change(CharacterBattle, :count).by(@run.team.characters.count)
+        @drop = FactoryBot.create(:drop, {:item_id=>@item.id, :character_battle_id=>CharacterBattle.last.id})
         assert !JSON.parse(response.body)["drops"].nil?
         puts response.body
 
@@ -33,7 +35,7 @@ RSpec.describe "/battles", type: :request do
                 post "/api/battles/", params: { :run_id=>@run.id, :boss_id=>@boss.id }
             }.to change(Battle, :count).by(0)
         }.to change(CharacterBattle, :count).by(0) #i.e. do not create new character_battles if battle already exists
-        
+        binding.irb
     end
     
     it "returns an existing battle" do
