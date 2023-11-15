@@ -10,7 +10,7 @@ describe DataController, :type=>:request do
 
       @character_class = FactoryBot.create(:character_class)
       @spec = FactoryBot.create(:specialization, {:character_class_id=>@character_class.id})
-      @spec2 = FactoryBot.create(:specialization, {:name=>"Fury", :character_class_id=>@character_class.id, :role=>@spec.role, :buffs=>@spec.buffs, :debuffs=>@spec.debuffs})
+      @spec2 = FactoryBot.create(:specialization, {:name=>"Fury", :character_class_id=>@character_class.id, :role=>@spec.role})
       @character = FactoryBot.create(:character, {:user_id=>@user.id, :character_class_id=>@character_class.id , :primary_spec_id=>@spec.id, :secondary_spec_id=>@spec2.id})
       @raid = FactoryBot.create(:raid)
       @item = FactoryBot.create(:item, {:raid_id=>@raid.id})
