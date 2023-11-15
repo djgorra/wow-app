@@ -13,6 +13,7 @@ Rails.application.routes.draw do
     #                    path_names: { sign_in: :login }
 
     # characters
+    resource :characters
     get "characters", to: 'characters#index'
     get "characters/:id", to: 'characters#show'
     post "characters", to: 'characters#create'

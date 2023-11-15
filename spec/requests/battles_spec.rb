@@ -35,7 +35,6 @@ RSpec.describe "/battles", type: :request do
                 post "/api/battles/", params: { :run_id=>@run.id, :boss_id=>@boss.id }
             }.to change(Battle, :count).by(0)
         }.to change(CharacterBattle, :count).by(0) #i.e. do not create new character_battles if battle already exists
-        binding.irb
     end
     
     it "returns an existing battle" do

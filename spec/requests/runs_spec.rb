@@ -50,7 +50,6 @@ RSpec.describe "/runs", type: :request do
         character_battle = FactoryBot.create(:character_battle, {:character_id=>@character.id, :battle_id=>battle.id})
 
         get "/api/teams/#{run.team_id}/runs/#{run.id}"
-        binding.irb
         assert_response :success
         assert_equal run.team_id, JSON.parse(response.body)["team_id"]
         assert_equal run.raid_id, JSON.parse(response.body)["raid_id"]
