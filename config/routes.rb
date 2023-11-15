@@ -45,6 +45,7 @@ Rails.application.routes.draw do
     #battles
     post "battles", to: 'battles#create'
     get "battles/:id", to: 'battles#show'
+    post "battles/:id/create_drop", to: 'battles#create_drop'
 
     #raids
     get "raids/:id/items", to: 'raids#items'
@@ -53,6 +54,7 @@ Rails.application.routes.draw do
     #drops
     get "/battles/:battle_id/drops/:id", to: 'drops#show'
     post "/battles/:battle_id/drops", to: 'drops#create'
+    post "/battles/:battle_id/drops/:id", to: 'drops#update'
 
     #buffs
     get "buffs", to: 'data#buffs'

@@ -60,4 +60,15 @@ RSpec.describe "/drops", type: :request do
         get "/api/battles/#{@battle.id}"
         assert @battle.drops.present?
     end
+
+    it "updates a drop" do
+        drop = FactoryBot.create(:drop, {:item_id=>@item.id, :character_battle_id=>@battle.character_battles[0].id})
+        assert_equal false, drop.disenchanted
+        params = {
+            disenchanted: true
+        }
+        post "/api/battles/#{@battle.id}/drops/#{drop.id}", :params => params
+        assert_response :success
+        assert_equal true, drop.reload.disenchanted
+    end
 end

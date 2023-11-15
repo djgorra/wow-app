@@ -24,4 +24,16 @@ class DropsController < ApplicationController
         render json: battle
     end
 
+    def update
+        drop = Drop.find(params[:id])
+        drop.update(drop_params)
+        render json: drop
+    end
+
+    private
+
+    def drop_params
+        params.permit(:disenchanted, :character_battle_id)
+    end
+
 end
