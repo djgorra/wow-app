@@ -25,6 +25,7 @@ class DropsController < ApplicationController
     end
 
     def update
+        battle = Battle.find(params[:battle_id])
         drop = Drop.find(params[:id])
         drop.update(drop_params)
         render json: battle
