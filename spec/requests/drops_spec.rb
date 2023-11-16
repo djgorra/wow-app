@@ -14,19 +14,21 @@ RSpec.describe "/drops", type: :request do
         spec2 = FactoryBot.create(:specialization, {:name=>"Fury", :character_class_id=>character_class.id, :role=>spec.role})
         team = FactoryBot.create(:team, {:user_id=>user.id})
         @character = FactoryBot.create(:character, {:user_id=>user.id, :character_class_id=>character_class.id , :primary_spec_id=>spec.id, :secondary_spec_id=>spec2.id})
-        character2 = FactoryBot.create(:character, {:user_id=>user.id, :character_class_id=>character_class.id , :primary_spec_id=>spec.id, :secondary_spec_id=>spec2.id})
+        @character2 = FactoryBot.create(:character, {:user_id=>user.id, :character_class_id=>character_class.id , :primary_spec_id=>spec.id, :secondary_spec_id=>spec2.id})
         team_character = FactoryBot.create(:team_character, {:team_id=>team.id, :character_id=>@character.id})
-        team_character2 = FactoryBot.create(:team_character, {:team_id=>team.id, :character_id=>character2.id})
+        team_character2 = FactoryBot.create(:team_character, {:team_id=>team.id, :character_id=>@character2.id})
         @raid = FactoryBot.create(:raid)
         boss = FactoryBot.create(:boss, {:raid_id=>@raid.id, :name=>"Boss1"})
         run = FactoryBot.create(:run, {:team_id=>team.id, :raid_id=>@raid.id})
         @battle = FactoryBot.create(:battle, {:run_id=>run.id, :boss_id=>boss.id})
         @item = FactoryBot.create(:item, {:boss_id=>boss.id, :raid_id=>@raid.id})
         character_battle = FactoryBot.create(:character_battle, {:character_id=>@character.id, :battle_id=>@battle.id})
-        character_battle2 = FactoryBot.create(:character_battle, {:character_id=>character2.id, :battle_id=>@battle.id})
+        character_battle2 = FactoryBot.create(:character_battle, {:character_id=>@character2.id, :battle_id=>@battle.id})
         @character.items << @item
         @character.save
         @character.reload
+        @character2.save
+        @character2.reload
         character_battle.reload
         @battle.reload
         run.reload
@@ -65,10 +67,12 @@ RSpec.describe "/drops", type: :request do
         drop = FactoryBot.create(:drop, {:item_id=>@item.id, :character_battle_id=>@battle.character_battles[0].id})
         assert_equal false, drop.disenchanted
         params = {
+            character_id: @character2.id,
             disenchanted: true
         }
         post "/api/battles/#{@battle.id}/drops/#{drop.id}", :params => params
         assert_response :success
         assert_equal true, drop.reload.disenchanted
+        assert_equal @battle.character_battles[1].id, drop.character_battle_id
     end
 end

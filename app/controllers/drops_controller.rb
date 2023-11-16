@@ -27,14 +27,9 @@ class DropsController < ApplicationController
     def update
         battle = Battle.find(params[:battle_id])
         drop = Drop.find(params[:id])
-        drop.update(drop_params)
-        render json: battle
-    end
-
-    private
-
-    def drop_params
-        params.permit(:disenchanted, :character_battle_id)
+        character_battle = CharacterBattle.find_by(character_id: params[:character_id], battle_id: battle.id)
+        drop.update(:disenchanted => params["disenchanted"], :character_battle_id => character_battle.id)
+        render json: battle.reload
     end
 
 end
