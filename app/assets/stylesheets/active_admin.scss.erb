@@ -16,11 +16,8 @@
 //
 //   .status_tag { background: #6090DB; }
 body.active_admin.logged_out {
-    background: url(<%= asset_path("barescare.jpg") %>) no-repeat center center fixed; 
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
+    background: url(<%= asset_path("admin_login_bg.png") %>) no-repeat center center fixed; 
+    background-color: #020b10;
     div.flash {
         background-color:white;
         padding: 10px;  
@@ -29,6 +26,41 @@ body.active_admin.logged_out {
     #active_admin_content {
         border-radius: 20px;
     }
+}
+
+.center {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  padding:40px;
+  text-align:center;
+}
+
+div#active_admin_content {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  padding:40px;
+  text-align:center;
+}
+
+.center a {
+    padding-top: 45px;
+    width: 802px;
+    height:73px;
+    background-image: url(<%= asset_path("admin_login_blank2.png") %>);
+    color: #f8e7dd;
+    display:block;
+    font-size:20px;
+    font-weight:bold;
+    text-decoration:none;
+}
+a:hover {
+    text-decoration:underline;
 }
 
 
