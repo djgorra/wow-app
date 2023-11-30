@@ -16,7 +16,9 @@
 //
 //   .status_tag { background: #6090DB; }
 body.active_admin.logged_out {
-    background: url(<%= asset_path("admin_login_bg.png") %>) no-repeat center center fixed; 
+    background: url(<%= asset_path("admin_login_bg.png") %>) no-repeat center center fixed;
+    background-size: contain;
+    background-repeat: no-repeat; 
     background-color: #020b10;
     div.flash {
         background-color:white;
@@ -31,7 +33,7 @@ body.active_admin.logged_out {
 .center {
   position: absolute;
   left: 50%;
-  top: 50%;
+  top: 80%;
   -webkit-transform: translate(-50%, -50%);
   transform: translate(-50%, -50%);
   padding:40px;
@@ -49,10 +51,10 @@ div#active_admin_content {
 }
 
 .center a {
-    padding-top: 45px;
-    width: 802px;
+    padding-top: 25px;
+    width: 367px;
     height:73px;
-    background-image: url(<%= asset_path("admin_login_blank2.png") %>);
+    background-image: url(<%= asset_path("admin_login_blank.png") %>);
     color: #f8e7dd;
     display:block;
     font-size:20px;
