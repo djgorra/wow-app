@@ -1,13 +1,12 @@
 class RunsController < ApplicationController
     before_action :set_team
     def index
-        runs = @team.runs
-        render json: runs
+        render json: @team.runs
     end
 
     def create
         run = Run.create(run_params)
-        render json: run
+        render json: @team.runs
     end
 
     def show
