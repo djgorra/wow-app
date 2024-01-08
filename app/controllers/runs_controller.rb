@@ -6,7 +6,7 @@ class RunsController < ApplicationController
 
     def create
         run = Run.create(run_params)
-        render json: @team.runs
+        render json: run
     end
 
     def show
