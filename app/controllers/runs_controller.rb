@@ -1,7 +1,7 @@
 class RunsController < ApplicationController
     before_action :set_team
     def index
-        render json: @team.runs
+        render json: @team.runs.order(created_at: :desc)
     end
 
     def create
