@@ -14,6 +14,12 @@ class RunsController < ApplicationController
         render json: run
     end
 
+    def summary
+        run = Run.find(params[:id])
+        render json: run.summary
+    
+    end
+
     private
 
     def run_params
