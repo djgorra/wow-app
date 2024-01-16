@@ -1,24 +1,79 @@
-# README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+# RaidCraft - Admin
 
-Things you may want to cover:
+RaidCraft is an application to coordinate loot drops in Classic World of Warcraft. Log in and add your friends' Battletags. Create your WoW characters and their wishlists -- then when you're ready, schedule a run. You'll be able to mark who received which drop and which drops are disenchanted.
 
-* Ruby version
+The application has two components - The phone application written in React Native, and the server backend written in Ruby on Rails.
 
-* System dependencies
+[Click here for the React Native application.](https://github.com/djgorra/reactwowapp)
 
-* Configuration
+The Ruby on Rails server acts as a backend and allows admins to browser teams and characters.
 
-* Database creation
 
-* Database initialization
+## Authors
 
-* How to run the test suite
+- [DJ Gorra](https://www.github.com/djgorra)
+- [Nicole Beguesse](https://github.com/perryb)
 
-* Services (job queues, cache servers, search engines, etc.)
 
-* Deployment instructions
+## Installation
 
-* ...
+Run the server with:
+
+```bash
+  bundle install
+  rails server
+```
+
+If no AdminUser exists, create one with:
+
+```bash
+    rails db:migrate
+    rails db:seed
+    rails server
+```
+
+Then you can login as the default user:
+- User: admin@example.com
+- Password: password
+
+Fill the database with data and icons.
+
+```bash
+    Item.seed
+    Boss.seed
+    Buff.seed
+    CharacterClass.seed
+    Raid.seed
+    Spell.seed
+```
+
+For test accounts and sample data:
+```bash
+    User.seed
+```
+    
+## Screenshots
+
+![App Screenshot](https://wow-app-rails-5c78013cc11c.herokuapp.com/screenshots/admin_login.png)
+
+
+
+## REST API Reference
+
+| Parameter | Description                |
+| :-------- | :------------------------- |
+| `/api/users/sign_in`   | Log in with email and password to get a bearer token  |
+| `/api/data_file`| Retrieve a list of all classes, specs, races, genders, raids and bosses|
+| `/api/friendlist` | Add or remove friends |
+| `/api/characters` | Add, edit or remove WoW characters |
+| `/api/characters/${character_id}/items` | Add or edit wishlist items |
+| `/api/teams` | Add or edit teams of characters |
+| `/api/teams/${team_id}/runs/${run_id}` | Create or retrieve a run for a team |
+| `/api/battles` | Create a battle for a run|
+| `/api/battles/${battle_id}/drops` | Create or edit a drop for a battle|
+
+
+
+
+
