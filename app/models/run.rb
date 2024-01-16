@@ -39,6 +39,19 @@ class Run < ApplicationRecord
         out
     end
 
+    def summary
+        out = []
+        battles.each do |b|
+            name = b.boss.name
+            section = {:title=>b.boss.name, :data=>[]}
+            b.drops.each do |d|
+                section[:data].push(d)
+            end
+            out.push(section)
+        end
+        out
+    end
+
     def as_json(options = {})
         out = {}
         [:id, :raid_id, :team_id, :raid_name, :timestamp, :completed_bosses, :remaining_bosses, :battles].each do |key|

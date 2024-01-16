@@ -28,7 +28,6 @@ RSpec.describe "/battles", type: :request do
         }.to change(CharacterBattle, :count).by(@run.team.characters.count)
         @drop = FactoryBot.create(:drop, {:item_id=>@item.id, :character_battle_id=>CharacterBattle.last.id})
         assert !JSON.parse(response.body)["drops"].nil?
-        puts response.body
 
         expect {
             expect {

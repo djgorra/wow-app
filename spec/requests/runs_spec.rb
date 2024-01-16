@@ -55,6 +55,17 @@ RSpec.describe "/runs", type: :request do
         assert_equal run.raid_id, JSON.parse(response.body)["raid_id"]
     end
 
+    it "shows a summary of a run" do
+        run = FactoryBot.create(:run, {:team_id=>@team.id, :raid_id=>@raid.id})
+        battle = FactoryBot.create(:battle, {:run_id=>run.id, :boss_id=>@boss.id})
+        character_battle = FactoryBot.create(:character_battle, {:character_id=>@character.id, :battle_id=>battle.id})
+        item = FactoryBot.create(:item, {:boss_id=>@boss.id, :raid_id=>@raid.id})
+        drop = FactoryBot.create(:drop, {:character_battle_id=>character_battle.id, :item_id=>item.id})
+
+        get "/api/teams/#{run.team_id}/runs/#{run.id}/summary"
+        assert_response :success
+    end
+
     # it "shows drops for a run" do
     #     run = FactoryBot.create(:run)
     #     boss = FactoryBot.create(:boss)

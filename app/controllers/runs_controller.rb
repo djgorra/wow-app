@@ -1,8 +1,7 @@
 class RunsController < ApplicationController
     before_action :set_team
     def index
-        runs = @team.runs
-        render json: runs
+        render json: @team.runs.order(created_at: :desc)
     end
 
     def create
@@ -13,6 +12,12 @@ class RunsController < ApplicationController
     def show
         run = Run.find(params[:id])
         render json: run
+    end
+
+    def summary
+        run = Run.find(params[:id])
+        render json: run.summary
+    
     end
 
     private
