@@ -52,6 +52,26 @@ class Run < ApplicationRecord
         out
     end
 
+    def mark_completed
+        if self.completed == false
+            self.completed = true
+            self.save
+        else
+            self.completed = false
+            self.save
+        end
+    end
+
+    def self.mark_all_completed
+        Run.where(:completed=>false).each do |run|
+            if run.battles.count == 0
+                run.delete
+                next
+            end
+            run.mark_completed
+        end
+    end
+
     def as_json(options = {})
         out = {}
         [:id, :raid_id, :team_id, :raid_name, :timestamp, :completed_bosses, :remaining_bosses, :battles].each do |key|
