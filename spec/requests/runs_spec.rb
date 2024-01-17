@@ -91,7 +91,7 @@ RSpec.describe "/runs", type: :request do
         battle = FactoryBot.create(:battle, {:run_id=>run.id, :boss_id=>@boss.id})
         character_battle = FactoryBot.create(:character_battle, {:character_id=>@character.id, :battle_id=>battle.id})
 
-        get "/api/teams/#{run.team_id}/runs/#{run.id}/completed"
+        get "/api/teams/#{run.team_id}/completed"
         assert_response :success
         assert_equal run.team_id, JSON.parse(response.body)[0]["team_id"]
         assert_equal run.raid_id, JSON.parse(response.body)[0]["raid_id"]
