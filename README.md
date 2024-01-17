@@ -7,7 +7,7 @@ The application has two components - The phone application written in React Nati
 
 [Click here for the React Native application.](https://github.com/djgorra/reactwowapp)
 
-The Ruby on Rails server acts as a backend and allows admins to browser teams and characters.
+The Ruby on Rails server acts as a backend and allows admins to browse teams and characters.
 
 
 ## Authors
@@ -28,16 +28,15 @@ Run the server with:
 If no AdminUser exists, create one with:
 
 ```bash
-    rails db:migrate
-    rails db:seed
-    rails server
+    bundle exec rails db:migrate
+    bundle exec rails db:seed
 ```
 
 Then you can login as the default user:
 - User: admin@example.com
 - Password: password
 
-Fill the database with data and icons.
+Fill the database with data and icons:
 
 ```bash
     Item.seed
@@ -72,6 +71,10 @@ For test accounts and sample data:
 | `/api/teams/${team_id}/runs/${run_id}` | Create or retrieve a run for a team |
 | `/api/battles` | Create a battle for a run|
 | `/api/battles/${battle_id}/drops` | Create or edit a drop for a battle|
+
+## License
+
+[GPL](https://www.gnu.org/licenses/gpl-3.0.en.html)
 
 
 
