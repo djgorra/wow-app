@@ -43,6 +43,8 @@ Rails.application.routes.draw do
     get "/teams/:team_id/runs/:id", to: 'runs#show'
     post "/teams/:team_id/runs", to: 'runs#create'
     get "/teams/:team_id/runs/:id/summary", to: 'runs#summary'
+    post "/teams/:team_id/runs/:id/mark_completed", to: 'runs#mark_completed'
+    get "/teams/:team_id/runs/:id/completed", to: 'runs#completed_index'
 
     #battles
     post "battles", to: 'battles#create'

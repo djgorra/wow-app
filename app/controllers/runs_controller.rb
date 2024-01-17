@@ -1,7 +1,17 @@
 class RunsController < ApplicationController
     before_action :set_team
     def index
-        render json: @team.runs.order(created_at: :desc)
+        render json: @team.runs.where(completed: false).order(created_at: :desc)
+    end
+
+    def completed_index
+        render json: @team.runs.where(completed: true).order(created_at: :desc)
+    end
+
+    def mark_completed
+        run = Run.find(params[:id])
+        run.mark_completed
+        render json: run
     end
 
     def create

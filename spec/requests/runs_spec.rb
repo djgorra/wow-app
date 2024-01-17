@@ -66,6 +66,37 @@ RSpec.describe "/runs", type: :request do
         assert_response :success
     end
 
+    it "marks a run as completed" do
+        run = FactoryBot.create(:run, {:team_id=>@team.id, :raid_id=>@raid.id})
+        battle = FactoryBot.create(:battle, {:run_id=>run.id, :boss_id=>@boss.id})
+        character_battle = FactoryBot.create(:character_battle, {:character_id=>@character.id, :battle_id=>battle.id})
+
+        post "/api/teams/#{run.team_id}/runs/#{run.id}/mark_completed"
+        assert_response :success
+        assert_equal run.reload.completed, true
+    end
+
+    it "marks a run as incomplete" do
+        run = FactoryBot.create(:run, {:team_id=>@team.id, :raid_id=>@raid.id, :completed=>true})
+        battle = FactoryBot.create(:battle, {:run_id=>run.id, :boss_id=>@boss.id})
+        character_battle = FactoryBot.create(:character_battle, {:character_id=>@character.id, :battle_id=>battle.id})
+
+        post "/api/teams/#{run.team_id}/runs/#{run.id}/mark_completed"
+        assert_response :success
+        assert_equal run.reload.completed, false
+    end
+
+    it "shows a list of completed runs" do
+        run = FactoryBot.create(:run, {:team_id=>@team.id, :raid_id=>@raid.id, :completed=>true})
+        battle = FactoryBot.create(:battle, {:run_id=>run.id, :boss_id=>@boss.id})
+        character_battle = FactoryBot.create(:character_battle, {:character_id=>@character.id, :battle_id=>battle.id})
+
+        get "/api/teams/#{run.team_id}/runs/#{run.id}/completed"
+        assert_response :success
+        assert_equal run.team_id, JSON.parse(response.body)[0]["team_id"]
+        assert_equal run.raid_id, JSON.parse(response.body)[0]["raid_id"]
+    end
+
     # it "shows drops for a run" do
     #     run = FactoryBot.create(:run)
     #     boss = FactoryBot.create(:boss)
