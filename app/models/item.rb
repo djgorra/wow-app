@@ -55,6 +55,7 @@ class Item < ApplicationRecord
       end
     end
 
+    #seed order: raids, items, bosses
     def self.seed
         data = open("https://raw.githubusercontent.com/nexus-devs/wow-classic-items/master/data/json/data.json")
         items = JSON.parse(data.read)

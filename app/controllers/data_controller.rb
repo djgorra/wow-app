@@ -3,7 +3,7 @@ class DataController < ApplicationController
     def datafile
       if params[:version_id]
         raids = Raid.where(version_id: params[:version_id]).as_json
-        bosses = Boss.where(version_id: params[:version_id]).as_json
+        bosses = Boss.all.as_json
       else
         raids = Raid.all.as_json
         bosses = Boss.all.as_json

@@ -65,7 +65,13 @@ class Boss < ApplicationRecord
             item = Item.find_by(name: drop)
             item.update(boss_id: horsemen_vanilla.id)
         end
-    
+
+        Item.where(raid_id: nil).each do |item|
+            if item.boss
+                item.update(raid_id: item.boss.raid_id)
+            end
+        end
+        return true
     end
 
     def as_json(options = {})
