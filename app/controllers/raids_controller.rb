@@ -1,7 +1,11 @@
 class RaidsController < ApplicationController
 
     def index 
-        raids = Raid.all
+        if params[:version_id]
+            raids = Raid.where(version_id: params[:version_id])
+        else
+            raids = Raid.all
+        end
         render json: raids
     end
 

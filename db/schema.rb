@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_01_17_150925) do
+ActiveRecord::Schema.define(version: 2024_01_26_152748) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -73,6 +73,7 @@ ActiveRecord::Schema.define(version: 2024_01_17_150925) do
   create_table "bosses", force: :cascade do |t|
     t.bigint "raid_id"
     t.string "name"
+    t.integer "version_id"
     t.index ["raid_id"], name: "index_bosses_on_raid_id"
   end
 
@@ -94,12 +95,11 @@ ActiveRecord::Schema.define(version: 2024_01_17_150925) do
     t.string "name", null: false
   end
 
-  create_table "character_items", force: :cascade do |t|
-    t.bigint "character_id", null: false
+  create_table "character_items", id: false, force: :cascade do |t|
+    t.bigint "id"
+    t.bigint "character_id"
     t.bigint "item_id"
     t.boolean "assigned", default: false
-    t.index ["character_id"], name: "index_character_items_on_character_id"
-    t.index ["item_id"], name: "index_character_items_on_item_id"
   end
 
   create_table "characters", force: :cascade do |t|
@@ -112,6 +112,7 @@ ActiveRecord::Schema.define(version: 2024_01_17_150925) do
     t.bigint "secondary_spec_id"
     t.integer "race"
     t.integer "gender"
+    t.integer "version_id"
     t.index ["character_class_id"], name: "index_characters_on_character_class_id"
     t.index ["primary_spec_id"], name: "index_characters_on_primary_spec_id"
     t.index ["secondary_spec_id"], name: "index_characters_on_secondary_spec_id"
@@ -125,13 +126,6 @@ ActiveRecord::Schema.define(version: 2024_01_17_150925) do
     t.integer "item_id"
     t.boolean "disenchanted", default: false
     t.index ["character_battle_id"], name: "index_drops_on_character_battle_id"
-  end
-
-  create_table "friendlists", force: :cascade do |t|
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.integer "user_id"
-    t.string "battletag"
   end
 
   create_table "friends", force: :cascade do |t|
@@ -150,8 +144,10 @@ ActiveRecord::Schema.define(version: 2024_01_17_150925) do
     t.integer "item_level"
     t.bigint "boss_id"
     t.bigint "raid_id"
+    t.integer "version_id"
     t.index ["boss_id"], name: "index_items_on_boss_id"
     t.index ["raid_id"], name: "index_items_on_raid_id"
+    t.index ["version_id"], name: "index_items_on_version_id"
   end
 
   create_table "jwt_denylist", force: :cascade do |t|
@@ -163,6 +159,8 @@ ActiveRecord::Schema.define(version: 2024_01_17_150925) do
   create_table "raids", force: :cascade do |t|
     t.string "name"
     t.string "wow_id"
+    t.integer "version_id"
+    t.integer "zone_level"
   end
 
   create_table "runs", force: :cascade do |t|
@@ -189,6 +187,13 @@ ActiveRecord::Schema.define(version: 2024_01_17_150925) do
     t.index ["character_class_id"], name: "index_specializations_on_character_class_id"
   end
 
+  create_table "specs_spells", force: :cascade do |t|
+    t.bigint "specialization_id"
+    t.bigint "spell_id"
+    t.index ["specialization_id"], name: "index_specs_spells_on_specialization_id"
+    t.index ["spell_id"], name: "index_specs_spells_on_spell_id"
+  end
+
   create_table "spells", force: :cascade do |t|
     t.bigint "specialization_id"
     t.bigint "buff_id"
@@ -213,7 +218,9 @@ ActiveRecord::Schema.define(version: 2024_01_17_150925) do
     t.string "name"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "version_id"
     t.index ["user_id"], name: "index_teams_on_user_id"
+    t.index ["version_id"], name: "index_teams_on_version_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -232,12 +239,14 @@ ActiveRecord::Schema.define(version: 2024_01_17_150925) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  create_table "versions", force: :cascade do |t|
+    t.string "version_name"
+  end
+
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "battles", "runs"
   add_foreign_key "character_battles", "battles"
   add_foreign_key "character_battles", "characters"
-  add_foreign_key "character_items", "characters"
-  add_foreign_key "character_items", "items"
   add_foreign_key "characters", "character_classes"
   add_foreign_key "characters", "specializations", column: "primary_spec_id"
   add_foreign_key "characters", "specializations", column: "secondary_spec_id"

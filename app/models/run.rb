@@ -14,15 +14,16 @@ class Run < ApplicationRecord
     end
 
     def completed_bosses
-        completed = []
+        return @completed if @completed
+        @completed = []
         raid.bosses.each do |boss|
             battles.each do |battle|
                 if battle.boss_id == boss.id
-                    completed << boss
+                    @completed << boss
                 end
             end
         end
-        completed
+        @completed
     end
 
     def remaining_bosses
@@ -64,7 +65,7 @@ class Run < ApplicationRecord
 
     def self.mark_all_completed
         Run.where(:completed=>false).each do |run|
-            if run.battles.count == 0
+            if run.battles.count == 0 || run.drops.count == 0 #i.e. if there are no battles or drops, delete the run
                 run.delete
                 next
             end

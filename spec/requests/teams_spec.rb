@@ -7,6 +7,7 @@ RSpec.describe "/teams", type: :request do
         @user = FactoryBot.create(:user)
         post "/api/users/sign_in", {:params=>{:user=>{:email=>@user.email, :password=>@user.password}}}   
         assert_response :success
+        current_user = @user
     
         @character_class = FactoryBot.create(:character_class)
         @spec = FactoryBot.create(:specialization, {:character_class_id=>@character_class.id})
@@ -34,6 +35,22 @@ RSpec.describe "/teams", type: :request do
     it "shows a list of teams" do
         get "/api/teams"
         assert_response :success
+    end
+
+    it "shows teams from a specific version" do
+        version = FactoryBot.create(:version)
+        version2 = FactoryBot.create(:version)
+        team = FactoryBot.create(:team, {:version_id=>version.id, :user_id=>@user.id})
+        team2 = FactoryBot.create(:team, {:version_id=>version2.id, :user_id=>@user.id})
+        team_character = FactoryBot.create(:team_character, {:team_id=>team.id, :character_id=>@character.id})
+        team_character2 = FactoryBot.create(:team_character, {:team_id=>team2.id, :character_id=>@character.id})
+        #create two teams with seperate versions
+
+        get "/api/teams", params: { version_id: version.id }
+        assert_response :success
+        assert_equal 1, JSON.parse(response.body).length
+        assert_equal team.id, JSON.parse(response.body)[0]["id"]
+        #expect only the team with the correct version to be returned
     end
 
     it "adds a character to a team" do

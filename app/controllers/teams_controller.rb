@@ -1,7 +1,11 @@
 class TeamsController < ApplicationController
 
     def index 
-        teams = current_user.teams
+        if params[:version_id]
+            teams = current_user.teams.where(version_id: params[:version_id])
+        else
+            teams = current_user.teams
+        end
         render json: teams
     end
 

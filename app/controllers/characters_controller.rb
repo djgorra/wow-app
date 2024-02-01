@@ -3,7 +3,11 @@ class CharactersController < ApplicationController
 
 
   def index
-    @characters = current_user.characters
+    if params[:version_id]
+      @characters = current_user.characters.where(version_id: params[:version_id])
+    else
+      @characters = current_user.characters
+    end
     render json: @characters
   end
 
