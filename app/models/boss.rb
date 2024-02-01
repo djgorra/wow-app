@@ -28,6 +28,8 @@ class Boss < ApplicationRecord
         naxx_bosses.each do |boss|
             if Boss.find_by(name: boss)
                 Boss.find_by(name: boss).update(raid_id: naxx_wrath.id)
+            else
+                Boss.create(name: boss, raid_id: naxx_wrath.id)
             end
         end
 

@@ -123,6 +123,7 @@ class Item < ApplicationRecord
                 end
             end
         end
+        return true
     end
 
 end
