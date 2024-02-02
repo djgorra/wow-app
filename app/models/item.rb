@@ -62,22 +62,11 @@ class Item < ApplicationRecord
         items.each do |item|
             
             if Item.find_by(wow_id: item["itemId"]).nil? # i.e. if the item is not already in the database
-                if item["subclass"] == "Junk" && item["quality"] == "Epic" && item["requiredLevel"] #i.e. if it's a tier token
-                    Item.create(
-                        name: item["name"],
-                        wow_id: item["itemId"],
-                        boss_id: boss.id,
-                        image_url: item["icon"],
-                        category: item["class"],
-                        subcategory: item["subclass"],
-                        item_level: item["itemLevel"]
-                    )
-                    next
-                end
 
-                categories = ["Weapon", "Armor"]
+                categories = ["Weapon", "Armor", "Miscellaneous"]
                 next unless categories.include?(item["class"]) # only want equipment, not consumables, etc.
-
+                next if item["class"] == "Miscellaneous" && item["quality"] != "Epic" && !item["requiredLevel"] # i.e. if item category is misc and it's not a tier token
+        
                 if item["source"].nil?
                     drops = item["tooltip"].select{|hash| hash.values.to_s.include?("Dropped") }
                     if drops.any?
