@@ -61,6 +61,19 @@ class Item < ApplicationRecord
         items = JSON.parse(data.read)
         items.each do |item|
 
+            if item["subclass"] == "Junk" && item["quality"] == "Epic" && item["requiredLevel"] #i.e. if it's a tier token
+                Item.create(
+                    name: item["name"],
+                    wow_id: item["itemId"],
+                    boss_id: boss.id,
+                    image_url: item["icon"],
+                    category: item["class"],
+                    subcategory: item["subclass"],
+                    item_level: item["itemLevel"]
+                )
+                next
+            end
+
             categories = ["Weapon", "Armor"]
             next unless categories.include?(item["class"]) # only want equipment, not consumables, etc.
 
