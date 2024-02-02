@@ -60,6 +60,10 @@ class Item < ApplicationRecord
         data = open("https://raw.githubusercontent.com/nexus-devs/wow-classic-items/master/data/json/data.json")
         items = JSON.parse(data.read)
         items.each do |item|
+
+            categories = ["Weapon", "Armor"]
+            next unless categories.include?(item["class"]) # only want equipment, not consumables, etc.
+
             if Item.find_by(wow_id: item["itemId"]).nil? # i.e. if the item is not already in the database
                 if item["source"].nil?
                     drops = item["tooltip"].select{|hash| hash.values.to_s.include?("Dropped") }
