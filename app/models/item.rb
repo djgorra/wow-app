@@ -60,24 +60,24 @@ class Item < ApplicationRecord
         data = open("https://raw.githubusercontent.com/nexus-devs/wow-classic-items/master/data/json/data.json")
         items = JSON.parse(data.read)
         items.each do |item|
-
-            if item["subclass"] == "Junk" && item["quality"] == "Epic" && item["requiredLevel"] #i.e. if it's a tier token
-                Item.create(
-                    name: item["name"],
-                    wow_id: item["itemId"],
-                    boss_id: boss.id,
-                    image_url: item["icon"],
-                    category: item["class"],
-                    subcategory: item["subclass"],
-                    item_level: item["itemLevel"]
-                )
-                next
-            end
-
-            categories = ["Weapon", "Armor"]
-            next unless categories.include?(item["class"]) # only want equipment, not consumables, etc.
-
+            
             if Item.find_by(wow_id: item["itemId"]).nil? # i.e. if the item is not already in the database
+                if item["subclass"] == "Junk" && item["quality"] == "Epic" && item["requiredLevel"] #i.e. if it's a tier token
+                    Item.create(
+                        name: item["name"],
+                        wow_id: item["itemId"],
+                        boss_id: boss.id,
+                        image_url: item["icon"],
+                        category: item["class"],
+                        subcategory: item["subclass"],
+                        item_level: item["itemLevel"]
+                    )
+                    next
+                end
+
+                categories = ["Weapon", "Armor"]
+                next unless categories.include?(item["class"]) # only want equipment, not consumables, etc.
+
                 if item["source"].nil?
                     drops = item["tooltip"].select{|hash| hash.values.to_s.include?("Dropped") }
                     if drops.any?
