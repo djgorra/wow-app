@@ -65,8 +65,9 @@ class Item < ApplicationRecord
 
                 categories = ["Weapon", "Armor", "Miscellaneous"]
                 next unless categories.include?(item["class"]) # only want equipment, not consumables, etc.
-                next if item["class"] == "Miscellaneous" && item["quality"] != "Epic" && !item["requiredLevel"] # i.e. if item category is misc and it's not a tier token
-        
+                skip_these = ["Mount", "Pet", "Other"]
+                next if skip_these.include?(item["subclass"]) # only want tier tokens, not mounts, pets, etc.
+                next if item["subcategory"] == "Junk" && item["itemLevel"] < 60
                 if item["source"].nil?
                     drops = item["tooltip"].select{|hash| hash.values.to_s.include?("Dropped") }
                     if drops.any?
