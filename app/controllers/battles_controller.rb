@@ -11,7 +11,7 @@ class BattlesController < ApplicationController
 
     def show
         battle = Battle.find(params[:id])
-        render json: battle
+        render json: battle.as_json(:include_items=>true)
     end
 
 end

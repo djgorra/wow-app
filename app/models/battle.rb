@@ -20,6 +20,9 @@ class Battle < ApplicationRecord
             out[key] = self.send(key)
         end
         out[:boss]={:id=>boss.id, :name=>boss.name}
+        if options && options.has_key?(:include_items) && options[:include_items]
+            out[:boss][:items] = boss.items
+        end
         out
     end
 end
