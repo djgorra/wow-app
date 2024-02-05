@@ -41,5 +41,6 @@ RSpec.describe "/battles", type: :request do
         get "/api/battles/#{@battle.id}"
         assert_response :success
         assert_equal @battle.id, JSON.parse(response.body)["id"]
+        assert !JSON.parse(response.body)["boss"]["items"].nil?
     end
 end

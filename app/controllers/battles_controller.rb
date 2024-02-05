@@ -6,7 +6,7 @@ class BattlesController < ApplicationController
                 CharacterBattle.create(character_id: c.id, battle_id: battle.id)
             end
         end
-        render json: battle.reload
+        render json: battle.reload.as_json(:include_items=>true)
     end
 
     def show
