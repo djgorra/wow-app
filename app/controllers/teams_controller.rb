@@ -1,8 +1,9 @@
 class TeamsController < ApplicationController
 
     def index 
-        if params[:team][:version_id]
-            teams = current_user.teams.where(version_id: params[:version_id])
+        version = params[:team][:version_id]
+        if version
+            teams = current_user.teams.where(version_id: version)
         else
             teams = current_user.teams
         end
@@ -11,8 +12,9 @@ class TeamsController < ApplicationController
 
     def create
         team = current_user.teams.create(team_params)
-        if params[:team][:version_id]
-            teams = current_user.teams.where(version_id: params[:version_id])
+        version = params[:team][:version_id]
+        if version
+            teams = current_user.teams.where(version_id: version)
         else
             teams = current_user.teams
         end
