@@ -10,7 +10,7 @@ class Team < ApplicationRecord
 
     def as_json(options = {})
         out = {}
-        [:id, :name, :user_id, :characters, :spells].each do |key|
+        [:id, :name, :user_id, :characters, :spells, :version_id].each do |key|
             out[key] = self.send(key)
         end
         out

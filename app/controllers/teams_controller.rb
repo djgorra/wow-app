@@ -11,7 +11,12 @@ class TeamsController < ApplicationController
 
     def create
         team = current_user.teams.create(team_params)
-        render json: current_user.teams
+        if params[:version_id]
+            teams = current_user.teams.where(version_id: params[:version_id])
+        else
+            teams = current_user.teams
+        end
+        render json: teams
     end
 
     def show
@@ -45,7 +50,7 @@ class TeamsController < ApplicationController
 
     private
     def team_params
-        params.require(:team).permit(:name)
+        params.require(:team).permit(:name, :version_id)
     end
 
     
