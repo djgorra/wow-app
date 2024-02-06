@@ -42,7 +42,7 @@ class Character < ApplicationRecord
 
     def as_json(options = {})
      out = {}
-      [:id, :name, :race, :gender, :user_id, :primary_spec_id, :secondary_spec_id, :character_class_id, :avatar, :class_icon, :primary_spec_icon, :secondary_spec_icon, :wishlist_items].each do |key|
+      [:id, :name, :race, :gender, :user_id, :primary_spec_id, :secondary_spec_id, :character_class_id, :avatar, :class_icon, :primary_spec_icon, :secondary_spec_icon, :wishlist_items, :version_id].each do |key|
        out[key] = self.send(key)
      end
      out
