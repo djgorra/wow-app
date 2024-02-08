@@ -12,6 +12,10 @@ Rails.application.routes.draw do
     # devise_for :users, controllers: { sessions: :sessions },
     #                    path_names: { sign_in: :login }
 
+
+    get "privacy_policy", to: 'pages#privacy_policy'
+    get "account_deletion", to: 'pages#account_deletion'
+
     # characters
     resource :characters
     get "characters", to: 'characters#index'
