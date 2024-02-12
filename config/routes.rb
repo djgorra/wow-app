@@ -3,6 +3,8 @@ Rails.application.routes.draw do
   devise_for :admin_users, ActiveAdmin::Devise.config
   ActiveAdmin.routes(self)
   root to: "pages#home"
+  get "privacy_policy", to: 'pages#privacy_policy'
+  get "account_deletion", to: 'pages#account_deletion'
   scope :api, defaults: { } do
     devise_for :users,
              controllers: {
@@ -13,8 +15,6 @@ Rails.application.routes.draw do
     #                    path_names: { sign_in: :login }
 
 
-    get "privacy_policy", to: 'pages#privacy_policy'
-    get "account_deletion", to: 'pages#account_deletion'
 
     # characters
     resource :characters
