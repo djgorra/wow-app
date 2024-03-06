@@ -7,6 +7,7 @@ describe UsersController, :type=>:request do
         expect{
             @user = User.create({:wow_id=>"867374154", :battletag=>"NiceBest#1557", :uuid=>"ac493fb6-5d4b-4874-b707-82f14b625568"})
         }.to change(User, :count).by(1)
+        binding.irb
         expect{
            @user = User.create({:wow_id=>"867374454", :battletag=>"NiceBest#3337", :uuid=>"ac493fb6-5d4b-4874-b707-82f1423jk25568"})
         }.to change(User, :count).by(1)

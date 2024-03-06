@@ -4,6 +4,7 @@ require 'rake'
 RSpec.describe "/teams", type: :request do
 
     before(:each) do
+        @version = FactoryBot.create(:version)
         @user = FactoryBot.create(:user)
         post "/api/users/sign_in", {:params=>{:user=>{:email=>@user.email, :password=>@user.password}}}   
         assert_response :success
@@ -20,10 +21,11 @@ RSpec.describe "/teams", type: :request do
         {:name=>"Team 1", :user_id=>@user.id}
     }
 
-    it "creates a new team" do
+    it "creates a new team with an invite code" do
         expect {
             post "/api/teams", params: { team: valid_attributes }
         }.to change(Team, :count).by(1)
+        Team.last.invite_code.should_not be_nil
     end
 
     it "updates a team" do
@@ -33,20 +35,19 @@ RSpec.describe "/teams", type: :request do
     end
 
     it "shows a list of teams" do
-        get "/api/teams"
+        get "/api/teams", {params: {:team=>{version_id: @version.id}}}
         assert_response :success
     end
 
     it "shows teams from a specific version" do
-        version = FactoryBot.create(:version)
         version2 = FactoryBot.create(:version)
-        team = FactoryBot.create(:team, {:version_id=>version.id, :user_id=>@user.id})
+        team = FactoryBot.create(:team, {:version_id=>@version.id, :user_id=>@user.id})
         team2 = FactoryBot.create(:team, {:version_id=>version2.id, :user_id=>@user.id})
         team_character = FactoryBot.create(:team_character, {:team_id=>team.id, :character_id=>@character.id})
         team_character2 = FactoryBot.create(:team_character, {:team_id=>team2.id, :character_id=>@character.id})
         #create two teams with seperate versions
 
-        get "/api/teams", params: { version_id: version.id }
+        get "/api/teams", {params: {:team=>{version_id: @version.id}}}
         assert_response :success
         assert_equal 1, JSON.parse(response.body).length
         assert_equal team.id, JSON.parse(response.body)[0]["id"]
@@ -58,7 +59,13 @@ RSpec.describe "/teams", type: :request do
         expect {
             post "/api/teams/#{team.id}/characters", params: { character_id: @character.id }
         }.to change(team.characters, :count).by(1)
+    end
 
+    it "adds a character to a team from an invite code" do
+        team = FactoryBot.create(:team)
+        expect {
+            post "/api/teams/#{team.invite_code}/invite", params: { character_id: @character.id }
+        }.to change(team.characters, :count).by(1)
     end
 
     it "removes a character from a team" do
@@ -68,5 +75,4 @@ RSpec.describe "/teams", type: :request do
             delete "/api/teams/#{team.id}/characters", params: { character_id: @character.id}
         }.to change(team.characters, :count).by(-1)        
     end
-
 end

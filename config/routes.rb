@@ -40,6 +40,7 @@ Rails.application.routes.draw do
     put "teams/:id", to: 'teams#update'
     delete "teams/:id", to: 'teams#destroy'
     post "teams/:id/characters", to: 'teams#add_characters'
+    post "teams/:invite_code/invite", to: 'teams#invite'
     delete "teams/:id/characters", to: 'teams#remove_characters'
 
     #runs 

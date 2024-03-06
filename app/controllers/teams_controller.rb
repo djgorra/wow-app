@@ -50,6 +50,12 @@ class TeamsController < ApplicationController
         render json: team
     end
 
+    def invite
+        team = Team.find_by(invite_code: params[:invite_code])
+        TeamCharacter.find_or_create_by!(team_id: team.id, character_id: params[:character_id])
+        render json: team
+    end
+
     private
     def team_params
         params.require(:team).permit(:name, :version_id)

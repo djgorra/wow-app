@@ -13,7 +13,7 @@ describe OauthController, :type=>:request do
         #i.e. check battletag was added to pre-existing user
         assert_equal @user.battletag, "NiceBest#1557"
     end
-
+ 
     #SCENARIO 2: Log in with new Battle.net account WIHOUT email/password
     #RESULT: Creates a new user with battletag and blank email and password
     it "creates a new user if connecting without email/password" do
