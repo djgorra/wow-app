@@ -13,6 +13,11 @@ class UsersController < ApplicationController
         end
     end
 
+    def destroy
+        current_user.destroy
+        render json: { message: "User deleted" }, status: :ok
+    end
+
     private
 
     def user_params

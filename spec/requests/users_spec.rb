@@ -7,7 +7,6 @@ describe UsersController, :type=>:request do
         expect{
             @user = User.create({:wow_id=>"867374154", :battletag=>"NiceBest#1557", :uuid=>"ac493fb6-5d4b-4874-b707-82f14b625568"})
         }.to change(User, :count).by(1)
-        binding.irb
         expect{
            @user = User.create({:wow_id=>"867374454", :battletag=>"NiceBest#3337", :uuid=>"ac493fb6-5d4b-4874-b707-82f1423jk25568"})
         }.to change(User, :count).by(1)
@@ -37,4 +36,16 @@ describe UsersController, :type=>:request do
         assert_response :success
         assert @user.reload.avatar.present?
       end
+
+    it "deletes a user" do
+        @user = FactoryBot.create(:user)
+        post "/api/users/sign_in", {:params=>{:user=>{:email=>@user.email, :password=>@user.password}}}   
+        assert_response :success
+        data = JSON.parse(response.body)
+        token = data["access_token"]     
+        expect{
+            delete "/users", { headers: { "HTTP_AUTHORIZATION" =>"Bearer #{token}" }}
+        }.to change(User, :count).by(-1)
+
+    end
 end 
