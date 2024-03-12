@@ -14,7 +14,10 @@ class UsersController < ApplicationController
     end
 
     def destroy
+        current_user.drops.destroy_all
+        current_user.character.destroy_all
         current_user.destroy
+
         render json: { message: "User deleted" }, status: :ok
     end
 
