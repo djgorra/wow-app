@@ -13,7 +13,7 @@ class UsersController < ApplicationController
         end
     end
 
-    def destroy
+    def delete
         user = User.find(params[:id])
         user.characters.destroy_all
         user.destroy
