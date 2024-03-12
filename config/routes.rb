@@ -68,7 +68,7 @@ Rails.application.routes.draw do
     #buffs
     get "buffs", to: 'data#buffs'
 
-    delete "users", to: 'users#delete'
+    delete "users/:id", to: 'users#delete'
 
     devise_scope :user do
       post "users/uuid", to: "login/sessions#uuid"
