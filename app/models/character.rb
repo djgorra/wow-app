@@ -2,6 +2,7 @@ class Character < ApplicationRecord
     has_many :character_items
     has_many :team_characters
     has_many :teams, through: :team_characters
+    has_many :teams, through: :team_code_characters
     has_many :items, through: :character_items
     has_many :character_battles
     has_many :battles, through: :character_battles

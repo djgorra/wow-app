@@ -58,6 +58,9 @@ class CharactersController < ApplicationController
     if current_user && @character.user_id == current_user.id
       respond_to do |format|
         if @character.update!(character_params)
+          if character_params[:team_code].present?
+            TeamCodeCharacter.create(team_id: Team.find_by(invite_code: character_params[:team_code]).id, character_id: @character.id)
+          end
           format.html { redirect_to "/api/characters/#{@character.id}", notice: "Character was successfully updated." }
           format.json { render :json=>current_user.as_json, status: :created }
         else

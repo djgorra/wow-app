@@ -30,6 +30,7 @@ RSpec.describe "/characters", type: :request do
     @spec2 = FactoryBot.create(:specialization, {:name=>"Fury", :character_class_id=>@character_class.id, :role=>@spec.role})
     @character = FactoryBot.create(:character, {:user_id=>@user.id, :character_class_id=>@character_class.id , :primary_spec_id=>@spec.id, :secondary_spec_id=>@spec2.id})
     @raid = FactoryBot.create(:raid)
+    @team = FactoryBot.create(:team, {:user_id=>@user.id})
   end
 
   let(:valid_attributes) {

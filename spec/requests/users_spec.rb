@@ -44,7 +44,7 @@ describe UsersController, :type=>:request do
         data = JSON.parse(response.body)
         token = data["access_token"]     
         expect{
-            delete "/users", { headers: { "HTTP_AUTHORIZATION" =>"Bearer #{token}" }}
+            delete "/api/users/#{@user.id}", { headers: { "HTTP_AUTHORIZATION" =>"Bearer #{token}" }}
         }.to change(User, :count).by(-1)
 
     end
