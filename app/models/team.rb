@@ -5,7 +5,8 @@ class Team < ApplicationRecord
     has_many :runs
     has_many :team_characters, :class_name => "TeamCharacter"
     has_many :characters, through: :team_characters
-    has_many :team_code_characters, :class_name => "TeamCodeCharacter"
+    has_many :team_codes, :class_name => "TeamCodeCharacter", :foreign_key => "team_id"
+    has_many :team_code_characters, :through=> :team_codes, :source => :character
 
     before_create :create_invite_code
 
