@@ -146,6 +146,13 @@ RSpec.describe "/characters", type: :request do
         assert_equal "NewName", character.reload.name
       end
 
+      it "adds character to team via team code" do
+        character = Character.create! valid_attributes
+        expect {
+          put "/api/characters/#{character.id}.json", params: { character: new_attributes, team_code: @team.invite_code }
+        }.to change(TeamCodeCharacter, :count).by(1)
+      end
+
       # it "redirects to the character" do
       #   character = Character.create! valid_attributes
       #   patch character_url(character), params: { character: new_attributes }
