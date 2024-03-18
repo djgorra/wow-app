@@ -41,9 +41,17 @@ class Character < ApplicationRecord
       "/specs/#{secondary_spec.name.gsub(" ", "").gsub("_", "")}#{character_class.name.capitalize.gsub(" ", "").gsub("_", "")}.png"
     end
 
+    def primary_spec_role
+      primary_spec.role
+    end
+
+    def secondary_spec_role
+      secondary_spec.role
+    end
+
     def as_json(options = {})
      out = {}
-      [:id, :name, :race, :gender, :user_id, :primary_spec_id, :secondary_spec_id, :character_class_id, :avatar, :class_icon, :primary_spec_icon, :secondary_spec_icon, :wishlist_items, :version_id].each do |key|
+      [:id, :name, :race, :gender, :user_id, :primary_spec_id, :secondary_spec_id, :primary_spec_icon, :secondary_spec_icon, :primary_spec_role, :secondary_spec_role, :character_class_id, :avatar, :class_icon, :wishlist_items, :version_id].each do |key|
        out[key] = self.send(key)
      end
      out
