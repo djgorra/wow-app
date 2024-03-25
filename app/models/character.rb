@@ -13,6 +13,7 @@ class Character < ApplicationRecord
     has_many :wishlist_item_links, -> { where (["assigned = ?", false]) }, :foreign_key => "character_id", :class_name => "CharacterItem"
     # has_many :wishlist_items, :through=>:wishlist_item_links, :class_name=>"Item", :source=>:item
     validates_presence_of :name, :user_id, :character_class_id, :primary_spec_id
+    default_scope { where(deleted: false) }
 
     enum :race => { "human"=>0, "gnome"=>1, "dwarf"=>2, "night_elf"=>3, "draenei"=>4,
      "orc"=>5, "troll"=>6, "undead"=>7, "tauren"=>8, "blood_elf"=>9}

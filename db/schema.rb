@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_03_14_172419) do
+ActiveRecord::Schema.define(version: 2024_03_25_180025) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -114,6 +114,7 @@ ActiveRecord::Schema.define(version: 2024_03_14_172419) do
     t.integer "race"
     t.integer "gender"
     t.integer "version_id"
+    t.boolean "deleted", default: false
     t.index ["character_class_id"], name: "index_characters_on_character_class_id"
     t.index ["primary_spec_id"], name: "index_characters_on_primary_spec_id"
     t.index ["secondary_spec_id"], name: "index_characters_on_secondary_spec_id"
