@@ -147,11 +147,18 @@ RSpec.describe "/characters", type: :request do
       end
 
       it "adds character to team via team code" do
-        character = Character.create! valid_attributes
         expect {
-          put "/api/characters/#{character.id}.json", params: { character: new_attributes, team_code: @team.invite_code }
+          put "/api/characters/#{@character.id}.json", params: { character: new_attributes, team_code: @team.invite_code }
         }.to change(TeamCodeCharacter, :count).by(1)
       end
+
+      it "does not add character to team via team code if team code is invalid" do
+        expect {
+          put "/api/characters/#{@character.id}.json", params: { character: new_attributes, team_code: "invalid" }
+        }.to change(TeamCodeCharacter, :count).by(0)
+        expect(response).to have_http_status(:not_found)
+      end
+
 
       # it "redirects to the character" do
       #   character = Character.create! valid_attributes

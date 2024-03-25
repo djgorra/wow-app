@@ -9,6 +9,11 @@ describe Login::RegistrationsController, :type=>:request do
     assert_response :success
     data = JSON.parse(response.body)
   end
+
+  it "fails login" do
+    post "/api/users", {:params=>{:user=>{:email=>"test@test2", :password=>"1", :username=>"Bob"}}}
+    assert_response :unauthorized
+  end
   
   it "shows an error message" do
     post "/api/users", {:params=>{:user=>{:email=>"test@test2.com", :password=>"123", :username=>"Bob"}}}

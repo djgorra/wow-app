@@ -59,7 +59,11 @@ class CharactersController < ApplicationController
       respond_to do |format|
         if @character.update!(character_params)
           if params[:team_code].present?
-            TeamCodeCharacter.create(team_id: Team.find_by(invite_code: params[:team_code]).id, character_id: @character.id)
+            if Team.find_by(invite_code: params[:team_code])
+              TeamCodeCharacter.create(team_id: Team.find_by(invite_code: params[:team_code]).id, character_id: @character.id)
+            else
+              format.json { render json: { message: "Team not found. Please check the invite code and try again." }, status: :not_found }
+            end
           end
           format.html { redirect_to "/api/characters/#{@character.id}", notice: "Character was successfully updated." }
           format.json { render :json=>current_user.as_json, status: :created }
