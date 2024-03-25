@@ -80,8 +80,8 @@ class CharactersController < ApplicationController
   # DELETE /characters/1 or /characters/1.json
   def destroy
     if current_user && @character.user_id == current_user.id
-      @character.destroy
-
+      @character.deleted = true
+      @character.save
       respond_to do |format|
         format.html { redirect_to characters_url, notice: "Character was successfully destroyed." }
         format.json { render json: :current_user.as_json }
