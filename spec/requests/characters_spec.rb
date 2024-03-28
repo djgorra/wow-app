@@ -191,4 +191,13 @@ RSpec.describe "/characters", type: :request do
   #     expect(response).to redirect_to(characters_url)
   #   end
   #end
+
+  it "sets faction based on race" do
+    character = Character.create! valid_attributes
+    assert_equal "Alliance", character.faction
+
+    character2 = Character.create(valid_attributes.merge(race:"Orc"))
+    assert_equal "Horde", character2.faction
+  end
+
 end
