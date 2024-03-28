@@ -26,9 +26,9 @@ class Character < ApplicationRecord
 
     def set_faction
       if ["Human", "Gnome", "Dwarf", "Night Elf", "Draenei"].include?(self.race)
-        self.faction = 0
+        self.Alliance!
       else
-        self.faction = 1
+        self.Horde!
       end
     end
 
