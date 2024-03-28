@@ -8,6 +8,8 @@ class Team < ApplicationRecord
     has_many :team_codes, :class_name => "TeamCodeCharacter", :foreign_key => "team_id"
     has_many :team_code_characters, :through=> :team_codes, :source => :character
 
+    enum :faction => { "alliance"=>0, "horde"=>1}
+
     before_create :create_invite_code
 
     def create_invite_code
@@ -23,7 +25,7 @@ class Team < ApplicationRecord
 
     def as_json(options = {})
         out = {}
-        [:id, :name, :user_id, :characters, :team_code_characters, :invite_code, :spells, :version_id].each do |key|
+        [:id, :name, :user_id, :characters, :team_code_characters, :invite_code, :spells, :version_id, :faction].each do |key|
             out[key] = self.send(key)
         end
         out

@@ -14,13 +14,23 @@ class Character < ApplicationRecord
     # has_many :wishlist_items, :through=>:wishlist_item_links, :class_name=>"Item", :source=>:item
     validates_presence_of :name, :user_id, :character_class_id, :primary_spec_id
     default_scope { where(deleted: false) }
+    before_save :set_faction
 
-    enum :race => { "human"=>0, "gnome"=>1, "dwarf"=>2, "night_elf"=>3, "draenei"=>4,
-     "orc"=>5, "troll"=>6, "undead"=>7, "tauren"=>8, "blood_elf"=>9}
-    enum :gender => { "male"=>0, "female"=>1}
-    enum :character_class => { "paladin"=>0, "warrior"=>1, "hunter"=>2, "rogue"=>3,
-     "priest"=>4, "shaman"=>5, "mage"=>6, "warlock"=>7, "druid"=>8, "death_knight"=>9 }
+    enum :race => { "Human"=>0, "Gnome"=>1, "Dwarf"=>2, "Night Elf"=>3, "Draenei"=>4,
+     "Orc"=>5, "Troll"=>6, "Undead"=>7, "Tauren"=>8, "Blood Elf"=>9}
+    enum :gender => { "Male"=>0, "Female"=>1}
+    enum :character_class => { "Paladin"=>0, "Warrior"=>1, "Hunter"=>2, "Rogue"=>3,
+     "Priest"=>4, "Shaman"=>5, "Mage"=>6, "Warlock"=>7, "Druid"=>8, "Death Knight"=>9 }
+    enum :faction => { "Alliance"=>0, "Horde"=>1}
 
+
+    def set_faction
+      if ["Human", "Gnome", "Dwarf", "Night Elf", "Draenei"].include?(self.race)
+        self.faction = 0
+      else
+        self.faction = 1
+      end
+    end
 
     def wishlist_items
       wishlist_item_links.map{|ci|  {:id=>ci.item.id, :raid_id=>ci.item.raid_id}}
@@ -52,7 +62,7 @@ class Character < ApplicationRecord
 
     def as_json(options = {})
      out = {}
-      [:id, :name, :race, :gender, :user_id, :primary_spec_id, :secondary_spec_id, :primary_spec_icon, :secondary_spec_icon, :primary_spec_role, :secondary_spec_role, :character_class_id, :avatar, :class_icon, :wishlist_items, :version_id].each do |key|
+      [:id, :name, :race, :gender, :user_id, :primary_spec_id, :secondary_spec_id, :primary_spec_icon, :secondary_spec_icon, :primary_spec_role, :secondary_spec_role, :character_class_id, :avatar, :class_icon, :wishlist_items, :version_id, :faction].each do |key|
        out[key] = self.send(key)
      end
      out

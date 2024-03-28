@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_03_25_180025) do
+ActiveRecord::Schema.define(version: 2024_03_28_164517) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -115,6 +115,7 @@ ActiveRecord::Schema.define(version: 2024_03_25_180025) do
     t.integer "gender"
     t.integer "version_id"
     t.boolean "deleted", default: false
+    t.integer "faction"
     t.index ["character_class_id"], name: "index_characters_on_character_class_id"
     t.index ["primary_spec_id"], name: "index_characters_on_primary_spec_id"
     t.index ["secondary_spec_id"], name: "index_characters_on_secondary_spec_id"
@@ -227,6 +228,7 @@ ActiveRecord::Schema.define(version: 2024_03_25_180025) do
     t.datetime "updated_at", precision: 6, null: false
     t.integer "version_id"
     t.string "invite_code"
+    t.integer "faction"
     t.index ["user_id"], name: "index_teams_on_user_id"
     t.index ["version_id"], name: "index_teams_on_version_id"
   end

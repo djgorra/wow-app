@@ -34,11 +34,11 @@ RSpec.describe "/characters", type: :request do
   end
 
   let(:valid_attributes) {
-    {:name=>"Fozzy", :user_id=>@user.id, :character_class_id=>@character_class.id , :primary_spec_id=>@spec.id, :secondary_spec_id=>@spec2.id, :race=>"human", :gender=>"male"}
+    {:name=>"Fozzy", :user_id=>@user.id, :character_class_id=>@character_class.id , :primary_spec_id=>@spec.id, :secondary_spec_id=>@spec2.id, :race=>"Human", :gender=>"Male"}
   }
 
   let(:invalid_attributes) {
-    {:name=>"", :user_id=>@user.id, :character_class_id=>@character_class.id , :primary_spec_id=>@spec.id, :secondary_spec_id=>@spec2.id, :race=>"human", :gender=>"male"}
+    {:name=>"", :user_id=>@user.id, :character_class_id=>@character_class.id , :primary_spec_id=>@spec.id, :secondary_spec_id=>@spec2.id, :race=>"Human", :gender=>"Male"}
   }
 
   # describe "GET /index" do
@@ -182,6 +182,7 @@ RSpec.describe "/characters", type: :request do
       expect {
         delete "/api/characters/#{@character.id}"
       }.to change(Character, :count).by(-1)
+      assert !response.body.include?(@character.name)
     end
 
   #   it "redirects to the characters list" do
