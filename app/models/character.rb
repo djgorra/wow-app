@@ -59,7 +59,7 @@ class Character < ApplicationRecord
     end
 
     def secondary_spec_role
-      secondary_spec.role
+      secondary_spec.try(:role)
     end
 
     def as_json(options = {})
