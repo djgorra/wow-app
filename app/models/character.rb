@@ -49,7 +49,9 @@ class Character < ApplicationRecord
     end
 
     def secondary_spec_icon
-      "/specs/#{secondary_spec.name.gsub(" ", "").gsub("_", "")}#{character_class.name.capitalize.gsub(" ", "").gsub("_", "")}.png"
+      if !secondary_spec.nil?
+        "/specs/#{secondary_spec.name.gsub(" ", "").gsub("_", "")}#{character_class.name.capitalize.gsub(" ", "").gsub("_", "")}.png"
+      end
     end
 
     def primary_spec_role
