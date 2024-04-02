@@ -39,7 +39,13 @@ class TeamsController < ApplicationController
         else
             team.deleted = true
             team.save
-            redirect_to teams_path(request.params), status: :see_other
+            version = params[:team][:version_id]
+            if version
+                teams = current_user.teams.where(version_id: version)
+            else
+                teams = current_user.teams
+            end
+            render json: teams
         end
     end
 

@@ -46,11 +46,7 @@ RSpec.describe "/teams", type: :request do
         expect {
             delete "/api/teams/#{team.id}", {params: {:team=>{version_id: @version.id}}}
         }.to change(Team, :count).by(-1)
-        assert_response :redirect
-        follow_redirect!
         assert_response :success
-        assert_equal "/api/teams", path
-        assert_equal "GET", request.request_method #I was running into an issue where it was trying to redirect to the index with a DELETE method
     end
 
     it "shows teams from a specific version" do
