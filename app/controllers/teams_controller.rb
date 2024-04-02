@@ -58,7 +58,7 @@ class TeamsController < ApplicationController
 
     private
     def team_params
-        params.require(:team).permit(:name, :version_id)
+        params.require(:team).permit(:name, :version_id, :faction)
     end
 
     

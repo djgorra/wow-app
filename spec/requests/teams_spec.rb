@@ -18,7 +18,7 @@ RSpec.describe "/teams", type: :request do
     end
 
     let(:valid_attributes) {
-        {:name=>"Team 1", :user_id=>@user.id}
+        {:name=>"Team 1", :user_id=>@user.id, :faction=>"Horde"}
     }
 
     it "creates a new team with an invite code" do
@@ -27,6 +27,8 @@ RSpec.describe "/teams", type: :request do
         }.to change(Team, :count).by(1)
         Team.last.invite_code.should_not be_nil
     end
+
+
 
     it "updates a team" do
         team = FactoryBot.create(:team)
