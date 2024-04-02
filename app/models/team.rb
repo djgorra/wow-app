@@ -2,7 +2,7 @@ require 'securerandom'
 
 class Team < ApplicationRecord
     belongs_to :user
-    has_many :runs
+    has_many :runs, dependent: :nullify
     has_many :team_characters, :class_name => "TeamCharacter"
     has_many :characters, through: :team_characters
     has_many :team_codes, :class_name => "TeamCodeCharacter", :foreign_key => "team_id"

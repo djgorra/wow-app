@@ -41,6 +41,17 @@ RSpec.describe "/teams", type: :request do
         assert_response :success
     end
 
+    it "deletes a team" do
+        team = FactoryBot.create(:team)
+        expect {
+            delete "/api/teams/#{team.id}", {params: {:team=>{version_id: @version.id}}}
+        }.to change(Team, :count).by(-1)
+        assert_response :redirect
+        follow_redirect!
+        assert_response :success
+        assert_equal "/api/teams", path
+    end
+
     it "shows teams from a specific version" do
         version2 = FactoryBot.create(:version)
         team = FactoryBot.create(:team, {:version_id=>@version.id, :user_id=>@user.id})

@@ -35,7 +35,7 @@ class TeamsController < ApplicationController
     def destroy
         team = Team.find(params[:id])
         team.destroy
-        render json: team
+        redirect_to controller: "teams", action: "index", params: request.params and return
     end
 
     def add_characters
