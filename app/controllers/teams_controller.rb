@@ -39,7 +39,7 @@ class TeamsController < ApplicationController
         else
             team.deleted = true
             team.save
-            redirect_to teams_path(request.params)
+            redirect_to teams_path(request.params), status: :see_other
         end
     end
 
