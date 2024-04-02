@@ -39,7 +39,7 @@ class TeamsController < ApplicationController
         else
             team.deleted = true
             team.save
-            redirect_to controller: "teams", action: "index", params: request.params and return
+            redirect_to teams_path(request.params)
         end
     end
 
