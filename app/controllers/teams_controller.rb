@@ -34,8 +34,13 @@ class TeamsController < ApplicationController
 
     def destroy
         team = Team.find(params[:id])
-        team.destroy
-        redirect_to controller: "teams", action: "index", params: request.params and return
+        if team.user_id != current_user.id
+            head :unauthorized and return
+        else
+            team.deleted = true
+            team.save
+            redirect_to controller: "teams", action: "index", params: request.params and return
+        end
     end
 
     def add_characters

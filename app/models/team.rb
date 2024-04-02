@@ -8,6 +8,8 @@ class Team < ApplicationRecord
     has_many :team_codes, :class_name => "TeamCodeCharacter", :foreign_key => "team_id"
     has_many :team_code_characters, :through=> :team_codes, :source => :character
 
+    default_scope { where(deleted: false) }
+
     enum :faction => { "Alliance"=>0, "Horde"=>1}
 
     before_create :create_invite_code

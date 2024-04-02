@@ -42,7 +42,7 @@ RSpec.describe "/teams", type: :request do
     end
 
     it "deletes a team" do
-        team = FactoryBot.create(:team)
+        team = FactoryBot.create(:team, {:version_id=>@version.id, :user_id=>@user.id})
         expect {
             delete "/api/teams/#{team.id}", {params: {:team=>{version_id: @version.id}}}
         }.to change(Team, :count).by(-1)
