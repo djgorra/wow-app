@@ -1,5 +1,5 @@
 class CharactersController < ApplicationController
-  before_action :set_character, only: %i[ show edit update destroy ]
+  before_action :set_character, only: %i[ show edit update destroy show_drops add_items ]
 
 
   def index
@@ -12,26 +12,28 @@ class CharactersController < ApplicationController
   end
 
   def show
-    @character = Character.find(params[:id])
     render json: @character
   end
 
+  def show_drops
+    render json: @character.drops
+  end
+
   def add_items
-    character = Character.find(params[:id])
     raid = Raid.find(params[:raid_id])
-    character.wishlist_items.each do |item|
+    @character.wishlist_items.each do |item|
       if item[:raid_id].to_s == raid.id.to_s
         #remove character_item
-        character.items.delete(Item.find(item[:id]))
+        @character.items.delete(Item.find(item[:id]))
       end
     end
 
     params[:item_ids].each do |item_id|
-      if !character.items.include?(Item.find(item_id))
-        character.items << Item.find(item_id)
+      if !@character.items.include?(Item.find(item_id))
+        @character.items << Item.find(item_id)
       end
     end
-    render json: character.user.as_json
+    render json: @character.user.as_json
   end
 
   # POST /characters or /characters.json
@@ -90,6 +92,7 @@ class CharactersController < ApplicationController
       head :unauthorized
     end
   end
+
 
   private
     # Use callbacks to share common setup or constraints between actions.

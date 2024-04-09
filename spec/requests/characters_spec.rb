@@ -98,6 +98,18 @@ RSpec.describe "/characters", type: :request do
     end
    end
 
+   describe "GET /show_drops" do
+    it "shows drops for specified character" do
+      battle = FactoryBot.create(:battle)
+      item = FactoryBot.create(:item, {:raid_id=>@raid.id})
+      character_battle = FactoryBot.create(:character_battle, {:character_id=>@character.id, :battle_id=>battle.id})
+      drop = FactoryBot.create(:drop, {:character_battle_id=>character_battle.id, :item_id=>item.id})
+      get "/api/characters/#{@character.id}/drops"
+      expect(response).to be_successful
+      assert response.body.include?(item.name)
+    end
+  end
+
   describe "POST /add_item" do
     context "with valid parameters" do
       it "adds an item to the character" do
