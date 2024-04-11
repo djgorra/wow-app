@@ -24,7 +24,7 @@ class Drop < ApplicationRecord
 
     def as_json(options = {})
         out = {}
-        [:id, :item, :character_battle_id, :character_id, :character_name, :disenchanted].each do |key|
+        [:id, :item, :character_battle_id, :character_id, :character_name, :disenchanted, :created_at].each do |key|
             out[key] = self.send(key)
         end
         out
