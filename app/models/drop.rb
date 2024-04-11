@@ -22,9 +22,14 @@ class Drop < ApplicationRecord
         self.character_battle.character.name
     end
 
+    def created_at_formatted
+        self.created_at.strftime("%Y-%m-%d")
+    end
+
+
     def as_json(options = {})
         out = {}
-        [:id, :item, :character_battle_id, :character_id, :character_name, :disenchanted, :created_at].each do |key|
+        [:id, :item, :character_battle_id, :character_id, :character_name, :disenchanted, :created_at_formatted].each do |key|
             out[key] = self.send(key)
         end
         out
