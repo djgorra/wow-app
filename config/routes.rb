@@ -5,6 +5,7 @@ Rails.application.routes.draw do
   root to: "pages#home"
   get "privacy_policy", to: 'pages#privacy_policy'
   get "account_deletion", to: 'pages#account_deletion'
+  get "tutorial", to: 'pages#tutorial'
   scope :api, defaults: { } do
     devise_for :users,
              controllers: {
