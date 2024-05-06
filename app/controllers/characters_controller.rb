@@ -93,6 +93,10 @@ class CharactersController < ApplicationController
     end
   end
 
+  def discord_create
+    render json: params
+  end
+
 
   private
     # Use callbacks to share common setup or constraints between actions.

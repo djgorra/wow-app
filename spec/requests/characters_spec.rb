@@ -204,6 +204,12 @@ RSpec.describe "/characters", type: :request do
   #   end
   #end
 
+  it "responds successfully" do
+    post "/api/characters/discord_create", params: { message: "Hello world" }
+    assert_response :success
+    puts response.body
+  end
+
   it "sets faction based on race" do
     character = Character.create! valid_attributes
     assert_equal "Alliance", character.faction

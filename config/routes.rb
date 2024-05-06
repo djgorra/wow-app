@@ -26,6 +26,7 @@ Rails.application.routes.draw do
     delete "characters/:id", to: 'characters#destroy'
     post "characters/:id/items", to: 'characters#add_items'
     get "characters/:id/drops", to: 'characters#show_drops'
+    post "characters/discord_create" => "characters#discord_create"
 
     # data
     get "datafile", to: 'data#datafile'
