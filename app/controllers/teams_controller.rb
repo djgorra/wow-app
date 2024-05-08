@@ -67,6 +67,12 @@ class TeamsController < ApplicationController
         render json: team
     end
 
+    def discord_create
+        user = User.find_by(battletag: params[:battle_id])
+        team = user.teams.first
+        render json: team.invite_code
+    end
+
     private
     def team_params
         params.require(:team).permit(:name, :version_id, :faction)

@@ -48,4 +48,16 @@ describe UsersController, :type=>:request do
         }.to change(User, :count).by(-1)
 
     end
+
+    it "gets a user's teams by battletag" do
+        @user = FactoryBot.create(:user)
+        @team = FactoryBot.create(:team, {:user_id=>@user.id})
+        @team2 = FactoryBot.create(:team, {:user_id=>@user.id})
+        @team3 = FactoryBot.create(:team, {:user_id=>@user.id})
+        @team4 = FactoryBot.create(:team, {:user_id=>@user.id})
+        post "/api/users/battletag", {:params=>{:battletag=>@user.battletag, :discord_id=>"1234"}}
+        assert_response :success
+        data = JSON.parse(response.body)
+        puts data
+    end
 end 

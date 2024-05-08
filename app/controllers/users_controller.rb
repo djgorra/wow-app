@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-    before_action :authenticate_user!
+    before_action :authenticate_user!, except: [:battletag]
     respond_to :json 
     def show
         render :json=>current_user.as_json
@@ -19,6 +19,17 @@ class UsersController < ApplicationController
         user.destroy
 
         render json: { message: "User deleted" }, status: :ok
+    end
+
+    def battletag
+        if user = User.find_by(battletag: params[:battletag])
+            if params[:discord_id].present?
+                user.update(discord_id: params[:discord_id])
+            end
+            render json: {:teams => user.teams.map{|team| {:invite_code=>team.invite_code, :name=>team.name}}}
+        else
+            render json: { errors: "User not found" }, status: :not_found
+        end
     end
 
     private

@@ -38,6 +38,7 @@ Rails.application.routes.draw do
 
     #teams
     get "teams", to: 'teams#index'
+    get "teams/discord_create", to: 'teams#discord_create'
     get "teams/:id", to: 'teams#show'
     post "teams", to: 'teams#create'
     put "teams/:id", to: 'teams#update'
@@ -72,6 +73,7 @@ Rails.application.routes.draw do
     get "buffs", to: 'data#buffs'
 
     delete "users/:id", to: 'users#delete'
+    post "users/battletag", to: 'users#battletag'
 
     devise_scope :user do
       post "users/uuid", to: "login/sessions#uuid"

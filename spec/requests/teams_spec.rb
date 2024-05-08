@@ -85,4 +85,12 @@ RSpec.describe "/teams", type: :request do
             delete "/api/teams/#{team.id}/characters", params: { character_id: @character.id}
         }.to change(team.characters, :count).by(-1)        
     end
+
+    it "returns team invite code" do
+        team = FactoryBot.create(:team, {:user_id=>@user.id})
+        @user.battletag = "test#1234"
+        @user.save
+        get "/api/teams/discord_create", params: { battle_id: @user.battletag }
+        assert_response :success
+    end
 end

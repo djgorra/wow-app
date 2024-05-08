@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2024_04_02_200438) do
+ActiveRecord::Schema.define(version: 2024_05_08_184815) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -131,6 +131,13 @@ ActiveRecord::Schema.define(version: 2024_04_02_200438) do
     t.index ["character_battle_id"], name: "index_drops_on_character_battle_id"
   end
 
+  create_table "friendlists", force: :cascade do |t|
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.integer "user_id"
+    t.string "battletag"
+  end
+
   create_table "friends", force: :cascade do |t|
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -239,6 +246,7 @@ ActiveRecord::Schema.define(version: 2024_04_02_200438) do
     t.integer "wow_id"
     t.string "battletag"
     t.string "uuid"
+    t.string "discord_id"
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
